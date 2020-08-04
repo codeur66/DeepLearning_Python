@@ -1,2 +1,6 @@
-# DeepLearningWithPython
-Comming soon when i will fix my Linux Mint corrupted and obsolete libraries on my laptop to support tensorflow libraries its wheel files  to do DL using tensors.
+# Data Science and Deep Learning in Python
+Use:Google Collab which offers free GPU.
+Data: On Google Drive (currently)
+Deploy: GCP (future)
+Style of development: Object Oriented
+ 
