@@ -15,7 +15,7 @@ model.add(layers.Conv2D(32, (3, 3)), activate='relu', input_shape=(28, 28, 1))
 # Thus we need less parameters such that a CNN can still identify the image.
 # or choose the Average value
 model.add(layers.MaxPool2D(2, 2))
-
+print("for debug")
 model.add(layers.Conv2D())
 model.add(layers.MaxPool2D())
 model.add(layers.Conv2D())
