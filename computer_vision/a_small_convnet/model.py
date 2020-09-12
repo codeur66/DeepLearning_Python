@@ -20,4 +20,4 @@ model.add(layers.Conv2D())
 model.add(layers.MaxPool2D())
 model.add(layers.Conv2D())
 model.add(layers.MaxPool2D())
-
+print("for debug")
