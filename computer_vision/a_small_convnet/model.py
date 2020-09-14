@@ -20,5 +20,18 @@ model.add(layers.MaxPool2D(2, 2))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.MaxPool2D(2, 2))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-model.summary() # check the num of parameters per layer
 
+# The output of every Conv2D and MaxPooling2D layer is a 3D tensor of
+# shape (height, width, channels). The width and height dimensions tend to shrink as we go deeper.
+# The number of channels is controlled by the first argument passed to the Conv2D layers (32 or 64).
+# Feed the last output tensor (of shape (3, 3, 64) ) into a densely
+# connected classifier network: a stack of Dense layers, they process vectors so
+# we flatten 3D tensor to 1D before.
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10, activation='softmax'))
+model.summary()
+
+from keras.datasets import mnist
+from keras.utils import to_categorical
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
