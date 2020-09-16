@@ -17,7 +17,7 @@ MaxPool2D: It is basically used to down sample the data.
 Reduce the size of the image because the larger number
 of pixels contribute to more parameters which can involve large chunks of data.
 Thus we need less parameters such that a CNN can still identify the image.
-Choose the Average value or the Max for sampling.
+Choose or the Max  - most of the times -  or less the the Average.
 """
 model.add(layers.MaxPool2D(2, 2)) # downsample feature maps by two
 # [in keras]The second layer did n’t receive an input shape argument—instead,
