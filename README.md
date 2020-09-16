@@ -1,5 +1,6 @@
 # Keras
 Topics  
- - Deep learning for computer vision 
- -                    text
- -                    sequences                  
+Deep learning for: 
+ -  computer vision 
+ -  text
+ -  sequences                  
