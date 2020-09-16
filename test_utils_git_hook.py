@@ -6,8 +6,6 @@ import subprocess as sp
 import tempfile
 
 import os
-## dsadsa
-# asdsad
 
 def git_hook():
     fd, path = tempfile.mkstemp()
