@@ -1,5 +1,5 @@
 # Conv2D and MaxPooling2D layers
-# Listing 5.1
+
 from keras import layers
 from keras import models
 
@@ -24,10 +24,12 @@ model.add(layers.MaxPool2D(2, 2))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 
 """The output of every Conv2D and MaxPooling2D layer is a 3D tensor of
-shape (height, width, channels). The width and height dimensions tend to shrink as we go deeper.
-The number of channels is controlled by the first argument passed to the Conv2D layers (32 or 64).
+shape (height, width, channels). 
+The width and height dimensions tend to shrink as we go deeper.
+The number of channels is controlled by the first argument passed to 
+the Conv2D layers (32 or 64).
 Feed the last output tensor (of shape (3, 3, 64) ) into a densely
-connected classifier network: a stack of Dense layers, they process vectors so
+connected classifier network: a stack of Dense layers, they process vectors. so
 we flatten 3D tensor to 1D before.
 """
 model.add(layers.Flatten())
@@ -38,3 +40,28 @@ model.summary()
 from keras.datasets import mnist
 from keras.utils import to_categorical
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+train_images = train_images.reshape((60000, 28, 28, 1))
+train_images = train_images.astype('float32')/255
+
+test_images = test_images.reshape((10000, 28, 28, 1))
+test_images = test_images.astype('float32')/255
+
+train_labels = to_categorical(train_labels)
+test_labels = to_categorical(test_labels)
+
+model.compile(optimizer='rmsprop',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'],
+              loss_weights=None,
+              weighted_metrics=None,
+              run_eagerly=None)
+
+model.fit(x=train_images,
+          y=train_labels,
+          batch_size=64,
+          epochs=5
+          )
+
+test_loss, test_acc = model.evaluate(test_images, test_labels)
+print("test_loss : {}, test accuracy : {}", format(test_loss, test_acc))
+
