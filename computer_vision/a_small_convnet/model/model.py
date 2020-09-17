@@ -14,7 +14,8 @@ class Model:
     (3,3) patches size ,32 = output feature map /features/filters/channels
     """
     def __init__(self):
-        self.model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1), strides=(1, 1), padding='valid'))
+        self.model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1),
+                                     strides=(1, 1), padding='valid'))
         """
         MaxPool2D: It is basically used to down sample the data.
         Reduce the size of the image because the larger number
@@ -47,7 +48,3 @@ class Model:
         self.model.add(layers.Dense(64, activation='relu'))
         self.model.add(layers.Dense(10, activation='softmax'))
         self.model.summary()
-        # self.model.save
-
-# model_design_path = getcwd() + '/model_simple_convnet.h5'
-
