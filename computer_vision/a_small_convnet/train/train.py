@@ -17,11 +17,17 @@ class Train:
         self.batch_size = 64
         self.epochs = 1
         self.train_images, self.train_labels, self.test_images, self.test_labels = \
-            self.train_test_data()
+            self.reshape_imgs()
+
+    @classmethod
+    def train_test_data(cls):
+        (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+        return (train_images, train_labels), (test_images, test_labels)
 
     @staticmethod
-    def train_test_data():
-        (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+    def reshape_imgs():
+        (train_images, train_labels), (test_images, test_labels) = Train.train_test_data()
+
         train_images = train_images.reshape((60000, 28, 28, 1))
         train_images = train_images.astype('float32') / 255
         test_images = test_images.reshape((10000, 28, 28, 1))
@@ -55,10 +61,12 @@ class Train:
     # input to visualization, does not work if invoke the saved model
     # from a foreign-next module backwards to this.
     def save_model(self, model_name):
-        self.model_architecture.model.save(model_name)
+        self.model_architecture.model.save(model_name, overwrite = True)
+
 
     @classmethod
     def model_path(cls, model_name):
+
         return getcwd() + '/' + model_name
 
 
@@ -68,6 +76,12 @@ def exec_training(model_name):
     train.save_model(model_name)
 
 
+def load_model(model_name):
+    from keras.models import load_model
+    return load_model(model_name)
+
+
 model_design = Model()
 train = Train(model_design)
 exec_training('simple_convnet.h5')
+
