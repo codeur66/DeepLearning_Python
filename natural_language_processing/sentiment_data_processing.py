@@ -1,11 +1,17 @@
 
+from natural_language_processing.configurations.configuration_infrastructure import Config
+from natural_language_processing.configurations.configurations import CFG
+
+
 class SentimentDataProcessing():
 
     def __init__(self):
-        from natural_language_processing.configurations.configuration_infrastructure import Config
-        from natural_language_processing.configurations.configurations import CFG
         self.config = Config.from_json(CFG)
         self.texts, self.labels = self.process_train_data()
+        self.maxlen = self.config.train.maxlen
+        self.training_samples = self.config.train.training_samples
+        self.validation_samples = self.config.train.validation_samples
+        self.max_words = self.config.train.max_words
 
     # Reads the folders stores in data structures the corresponding data (data and labels) for the train.
     def process_train_data(self):
@@ -28,25 +34,16 @@ class SentimentDataProcessing():
                         self.labels.append(1)
         return self.texts, self.labels
 
-    """Pretrained word embeddings are meant to
-    be particularly useful on problems where little training data is available (otherwise,
-    task-specific embeddings are likely to outperform them), so we restrict the learning 
-    to only 200 unique records."""
-
     def tokenize_train_data(self):
         from keras.preprocessing.text import Tokenizer
         from keras.preprocessing.sequence import pad_sequences  # to make the lists insto 2D of same sizes.
         import numpy as np
-        maxlen = 100  # cut of the reviews after 100 words
-        training_samples = 200
-        validation_samples = 10000
-        max_words = 10000  # keep only the first 10.000 words of dataset
-        tokenizer = Tokenizer(num_words=max_words)
+        tokenizer = Tokenizer(num_words=self.max_words)
         tokenizer.fit_on_texts(self.texts)
         sequences = tokenizer.texts_to_sequences(self.texts)
         word_index = tokenizer.word_index
         print('Found %s unique tokens.' % len(word_index))
-        data = pad_sequences(sequences, maxlen=maxlen)
+        data = pad_sequences(sequences, maxlen=self.maxlen)
         labels = np.asarray(self.labels)
         print('Shape of data tensor:', data.shape)
         print('Shape of label tensor:', labels.shape)
@@ -54,8 +51,9 @@ class SentimentDataProcessing():
         np.random.shuffle(indices)
         data = data[indices]
         labels = labels[indices]
+        return data, labels
 
 
-data =  SentimentDataProcessing()
+data = SentimentDataProcessing()
 train_data, labels = data.process_train_data()
 tokens = data.tokenize_train_data()
