@@ -2,21 +2,26 @@
 from natural_language_processing.configurations.configuration_infrastructure import Config
 from natural_language_processing.configurations.configurations import CFG
 
+"""SentimentDataProcessing become a class for 
+the reason of many internal data sources
+may be added in the pipeline or the current may change.
+In contrast to ParseWordEmbeddings class which holds external data source and pretrained.
+"""
 
 class SentimentDataProcessing():
 
     def __init__(self):
         self.config = Config.from_json(CFG)
         self.texts, self.labels = self.process_train_data()
-        self.maxlen = self.config.train.maxlen
-        self.training_samples = self.config.train.training_samples
-        self.validation_samples = self.config.train.validation_samples
-        self.max_words = self.config.train.max_words
+        self.maxlen = self.config.data.maxlen
+        self.training_samples = self.config.data.training_samples
+        self.validation_samples = self.config.data.validation_samples
+        self.max_words = self.config.data.max_words
 
     # Reads the folders stores in data structures the corresponding data (data and labels) for the train.
     def process_train_data(self):
         import os
-        train_dir = os.path.join(self.config.train.path_train_data, 'train')
+        train_dir = os.path.join(self.config.data.path_train_data, 'train')
         print("train_dir : ", train_dir)
         self.texts = []
         self.labels = []
@@ -53,7 +58,16 @@ class SentimentDataProcessing():
         labels = labels[indices]
         return data, labels
 
+    def split_train_validation(self):
+        x_train = self.tokenize_train_data()[0][:self.training_samples]
+        y_train =  self.tokenize_train_data()[1][:self.training_samples]
+        x_val = self.tokenize_train_data()[0][self.training_samples: self.training_samples + self.validation_samples]
+        y_val = self.tokenize_train_data()[1][self.training_samples: self.training_samples + self.validation_samples]
+        print("x_train, y_train, x_val, y_val", x_train.shape, y_train.shape, x_val.shape, y_val.shape)
+        return x_train, y_train, x_val, y_val
 
-data = SentimentDataProcessing()
-train_data, labels = data.process_train_data()
-tokens = data.tokenize_train_data()
+
+data_proc = SentimentDataProcessing()
+data_proc.process_train_data()
+data_proc.tokenize_train_data()
+split_data = data_proc.split_train_validation()
