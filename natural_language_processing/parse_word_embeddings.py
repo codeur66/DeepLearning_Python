@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from natural_language_processing.sentiment_data_processing import TextProcessing
+from natural_language_processing.text_processing import TextProcessing
 
 """In contrast to TextProcessing class which holds external data
 ParseWordEmbeddings is a pretrained  network. A saved network that was previously
@@ -22,46 +22,44 @@ class ParseWordEmbeddings:
     glove_dir = config.external_data_sources.word_embeddings
     file_name = config.external_data_sources.embeddings_file_name
 
-    # embeddings have coefficients of similarity creating he word vectors
+    # embeddings is a dictionary that maps the word indices to an associated vector.
     @classmethod
-    def create_embeddings_index(cls):
-        embeddings_index = {}
+    def embeddings_vectors(cls):
+        embedding_indexed_vectors = {}
         with open(os.path.join(cls.glove_dir, cls.file_name)) as f:
             for line in f:
                 values = line.split()
                 word = values[0]
                 coefs = np.asarray(values[1:], dtype='float32')
-                # list consisting of a word and all the weights (coefs)  computed from the NN
-                embeddings_index[word] = coefs
-        print("values len; ", len(values))
-        print("word len; ", len(word))
-        print("embeddings_index len:", len(embeddings_index))
-
+                # a list consists a word and all the weights (coefs) computed from the NN
+                embedding_indexed_vectors[word] = coefs
         print('Found %s coefficients.' % len(coefs))
-        print('Found %s word vectors.' % len(embeddings_index))
-        print("Please wait.The embeddings take time.")
-        return embeddings_index
+        print('Found %s word vectors.' % len(embedding_indexed_vectors))
+        return embedding_indexed_vectors
 
-    def parse_embeddings(self):
-        max_words = self.config.data.max_words
+    # All sequences in a batch must have the same length to pack them into a single tensor,
+        # so we do zero padding to shorter sequences, and the longer sequences are truncated.
+
+    @classmethod
+    def create_embeddings_matrix(cls, word_index):
+        max_words = cls.config.data.max_words
         embedding_matrix = np.zeros((max_words,
-                                      self.config.external_data_sources.embeddings_dimension))
-
-        data_pr = TextProcessing()
-        word_index = data_pr.get_word_index()
-
-        print("word_index: ", word_index)
+                                     cls.config.external_data_sources.embeddings_dimension))
+        embedding_indexed_vectors = cls.embeddings_vectors()
         for word, i in word_index.items():
-            if i< max_words:
-                embedding_vector = ParseWordEmbeddings.create_embeddings_index().get(word)
-                if embedding_vector is not None:
+            if i < max_words:
+                embedding_vector = embedding_indexed_vectors.get(word)
+                if embedding_vector is not None:  # words not found in the embedding index will be zeros
                     embedding_matrix[i] = embedding_vector
         print("embedding_matrix : ", embedding_matrix)
+        return embedding_matrix
 
 
 
-data_process = TextProcessing()
-data_process.process_train_data()
+data_proc = TextProcessing()
+data_proc.process_train_data()
+data_proc.shape_tensors_and_store_data()
+data_proc.split_data()
 
-parser = ParseWordEmbeddings.create_embeddings_index()
-# parser.parse_embeddings()
+ParseWordEmbeddings.create_embeddings_matrix(data_proc.indexing_informs_tokenizer())
+parser = ParseWordEmbeddings.embeddings_vectors()
