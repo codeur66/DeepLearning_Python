@@ -10,7 +10,7 @@ a generic model.But for very specific tasks word embeddings make things worse.
 It is flexible to changes for fine tunning unfreezing a few of
 the top layers of a frozen model, which hold the more abstract patterns in order 
 to make them more relevant for the problem at hand, to improve the accuracy around 1%.
-But we avoid to spend so much time, so we do not change the class, so we make use of
+But we avoid to spend so much time, so we will not change this class, so we make use of
 classmethod decorator.
 """
 
