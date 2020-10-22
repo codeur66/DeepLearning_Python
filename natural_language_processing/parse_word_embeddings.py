@@ -1,7 +1,5 @@
 import os
 import numpy as np
-from natural_language_processing.text_processing import TextProcessing
-
 """In contrast to TextProcessing class which holds external data
 ParseWordEmbeddings is a pretrained  network. A saved network that was previously
 trained on a large dataset.If this original dataset is large enough and general enough
@@ -14,10 +12,11 @@ But we avoid to spend so much time, so we will not change this class, so we make
 classmethod decorator.
 """
 
+from natural_language_processing.configurations.configuration_infrastructure import Config
+from natural_language_processing.configurations.configurations import CFG
+
 class ParseWordEmbeddings:
 
-    from natural_language_processing.configurations.configuration_infrastructure import Config
-    from natural_language_processing.configurations.configurations import CFG
     config = Config.from_json(CFG)
     glove_dir = config.external_data_sources.word_embeddings
     file_name = config.external_data_sources.embeddings_file_name
@@ -56,10 +55,3 @@ class ParseWordEmbeddings:
 
 
 
-data_proc = TextProcessing()
-data_proc.process_train_data()
-data_proc.shape_tensors_and_store_data()
-data_proc.split_data()
-
-ParseWordEmbeddings.create_embeddings_matrix(data_proc.indexing_informs_tokenizer())
-parser = ParseWordEmbeddings.embeddings_vectors()

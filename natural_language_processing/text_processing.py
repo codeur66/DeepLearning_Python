@@ -1,7 +1,7 @@
 import numpy as np
-import os
 from natural_language_processing.configurations.configuration_infrastructure import Config
 from natural_language_processing.configurations.configurations import CFG
+from keras.preprocessing.text import Tokenizer
 
 
 """TextProcessing, different data sources
@@ -9,7 +9,6 @@ may be added in the pipeline for other models or the current may need extension.
 In contrast to ParseWordEmbeddings class which holds external data source - pretrained.
 """
 
-from keras.preprocessing.text import Tokenizer
 
 class TextProcessing:
 
