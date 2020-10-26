@@ -44,6 +44,7 @@ class ParseWordEmbeddings:
         max_words = cls.config.data.max_words
         embedding_matrix = np.zeros((max_words,
                                      cls.config.external_data_sources.embeddings_dimension))
+        print("embedding_matrix shape : ", embedding_matrix.shape)
         embedding_indexed_vectors = cls.embeddings_vectors()
         for word, i in word_index.items():
             if i < max_words:
@@ -52,6 +53,3 @@ class ParseWordEmbeddings:
                     embedding_matrix[i] = embedding_vector
         print("embedding_matrix : ", embedding_matrix)
         return embedding_matrix
-
-
-

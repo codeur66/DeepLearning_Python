@@ -75,5 +75,6 @@ class TextProcessing:
             y_train = y[:self.training_samples]
             x_val = x[self.training_samples: self.training_samples + self.validation_samples]
             y_val = y[self.training_samples: self.training_samples + self.validation_samples]
-            print("x_train, y_train, x_val, y_val ; ", x_train, y_train, x_val, y_val)
+            # print("x_train, y_train, x_val, y_val ; ", x_train, y_train, x_val, y_val)
+            print("x_train, y_train, x_val, y_val ; ", x_train.shape, y_train.shape, x_val.shape, y_val.shape)
             return x_train, y_train, x_val, y_val

@@ -1,3 +1,5 @@
 pip install tensorflow
 pip install keras
 pip install matplotlib
+sudo apt install graphviz # for keras.utils.plot_model
+pip install pydot  # for keras.utils.plot_model
