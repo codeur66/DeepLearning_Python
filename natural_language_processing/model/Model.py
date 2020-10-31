@@ -106,7 +106,7 @@ class Model(BaseModel):
             plt.show()
 
 md = Model()
-x_train, y_train, x_val, y_val, embeddings_matrix = load_data
+x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
 md.build_architecture().build()
 hist = md.train(x_train = x_train, y_train = y_train, x_val = x_val, y_val = y_val, embeddings_matrix = embeddings_matrix)
 eval_plot = md.evaluate(history = hist)
