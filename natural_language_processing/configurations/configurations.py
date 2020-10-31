@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+import tensorflow.keras.optimizers
 CFG = {
     "external_data_sources": {
         "word_embeddings": "/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/glove.6B"
@@ -20,13 +20,13 @@ CFG = {
         , "hidden_layers_act_func": 'relu'
         , "last_layer_activation_function": 'sigmoid' # for binary classification we choose sigmoid activation function
         , "optimizer": [
-           """ tf.keras.optimizers.RMSprop(
-                learning_rate=0.001  
+           tf.keras.optimizers.RMSprop(
+                learning_rate=0.001
                 , rho=0.9
-                , momentum=0.1 
+                , momentum=0.1
                 , epsilon=1e-7
-                , centered=False 
-                , name='RMSprop')"""
+                , centered=False
+                , name='RMSprop')
             , """tf.keras.optimizers.SGD(
                 learning_rate=0.01, momentum=0.0, nesterov=False, name="SGD")"""
         ]
