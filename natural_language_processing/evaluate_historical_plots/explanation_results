@@ -1,0 +1,4 @@
+The four blots shows as the samples increase
+the overfit increases too,a result of embeddings.
+The sweet spot is at 100 samples for training
+but still everfit occurs.

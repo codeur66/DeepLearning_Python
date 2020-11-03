@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from configurations.config_infrastructure import Config
+from natural_language_processing.configurations.configuration_infrastructure import Config
 
 """We have to think about the infrastructure  before we dive into the code of the model.
 Abstract Model Class (ABC) that is inherited to all models."""

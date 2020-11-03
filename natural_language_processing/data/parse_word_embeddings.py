@@ -51,5 +51,4 @@ class ParseWordEmbeddings:
                 embedding_vector = embedding_indexed_vectors.get(word)
                 if embedding_vector is not None:  # words not found in the embedding index will be zeros
                     embedding_matrix[i] = embedding_vector
-        print("embedding_matrix : ", embedding_matrix)
         return embedding_matrix
