@@ -5,7 +5,7 @@ ParseWordEmbeddings is a pretrained  network. A saved network that was previousl
 trained on a large dataset.If this original dataset is large enough and general enough
 the hierarchy of features learned by the pretrained network can effectively act as 
 a generic model.But for very specific tasks word embeddings make things worse.
-It is flexible to changes for fine tunning unfreezing a few of
+It is flexible to changes for fine tuning unfreezing a few of
 the top layers of a frozen model, which hold the more abstract patterns in order 
 to make them more relevant for the problem at hand, to improve the accuracy around 1%.
 But we avoid to spend so much time, so we will not change this class, so we make use of
@@ -20,6 +20,9 @@ class ParseWordEmbeddings:
     config = Config.from_json(CFG)
     glove_dir = config.external_data_sources.word_embeddings
     file_name = config.external_data_sources.embeddings_file_name
+
+    from h5py import File
+    hdf = File("/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/external_dataset.h5py", "w")
 
     # embeddings is a dictionary that maps the word indices to an associated vector.
     @classmethod
@@ -37,7 +40,7 @@ class ParseWordEmbeddings:
         return embedding_indexed_vectors
 
     # All sequences in a batch must have the same length to pack them into a single tensor,
-        # so we do zero padding to shorter sequences, and the longer sequences are truncated.
+    # so we do zero padding to shorter sequences, and the longer sequences are truncated.
 
     @classmethod
     def create_embeddings_matrix(cls, word_index):
@@ -52,3 +55,18 @@ class ParseWordEmbeddings:
                 if embedding_vector is not None:  # words not found in the embedding index will be zeros
                     embedding_matrix[i] = embedding_vector
         return embedding_matrix
+
+    @classmethod
+    def store_h5py(cls, embedding_matrix):
+        ParseWordEmbeddings.hdf.create_dataset("external_dataset.h5py",
+                                               data=embedding_matrix)
+
+#
+# from natural_language_processing.data.text_processing import TextProcessing
+# data_proc = TextProcessing()
+
+#
+# from natural_language_processing.data.parse_word_embeddings import ParseWordEmbeddings
+# word_index = data_proc.indexing_informs_tokenizer()
+# embeddings_matrix = ParseWordEmbeddings.create_embeddings_matrix(word_index) # the pretrainned weights of NN
+# ParseWordEmbeddings.store_h5py(embeddings_matrix)
