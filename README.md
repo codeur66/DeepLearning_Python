@@ -3,7 +3,7 @@
 Topics  
 Deep learning for: 
  -  computer vision 
- -  text
- -  sequences           
+ -  natural language processing
+ -  time series, sequences           
  
  Designed in Object Oriented Development taking into account the machine learning differences versus a strict OOP style.
