@@ -7,4 +7,4 @@ Deep learning for:
  -  time series, sequences           
  
  Designed in Object Oriented Development taking into careful consideration 
- the need of machine learning versus following a strict OOP style.
+ the need of machine learning rather than following strict OOP style.
