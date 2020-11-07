@@ -11,10 +11,8 @@ from natural_language_processing.configurations.configurations import CFG
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Flatten, Dense
 from tensorflow.keras.utils import plot_model
-# load the word embeddings in the model
-from natural_language_processing.data.parse_word_embeddings import ParseWordEmbeddings
-from natural_language_processing.data.text_processing import TextProcessing
 from natural_language_processing.model.BaseModel import BaseModel
+import natural_language_processing.model.read_hdf5 as rd
 
 
 class Model(BaseModel):
@@ -33,17 +31,11 @@ class Model(BaseModel):
         self.model = None
 
     def load_data(self, **kwargs):
-        # get the data and call the method of processing
-        data_proc = TextProcessing()
-        data_proc.process_train_data()
-        data_proc.shape_tensors_and_store_data()
-        x_train, y_train, x_val, y_val = data_proc.split_data()
-        # get the pretrained data
-        # ParseWordEmbeddings.embeddings_vectors()
-        word_index = data_proc.indexing_informs_tokenizer()
-        # get the pretrainned weights to insert into the neural network
-        embeddings_matrix = ParseWordEmbeddings.create_embeddings_matrix(word_index)
-        return x_train, y_train, x_val, y_val, embeddings_matrix
+        x_trn_set, y_trn_set, x_val_set, y_val_set, hdf_in = rd.get_internal_hdf()
+        embeddings, hdf_ext = rd.get_external_hdf()
+        # hdf_in.close()
+        # hdf_ext.close()
+        return x_trn_set, y_trn_set, x_val_set, y_val_set, embeddings
 
     def build_architecture(self):
         self.model = Sequential()
@@ -98,4 +90,4 @@ md = Model(CFG)
 x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
 md.build_architecture().build()
 hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, embeddings_matrix=embeddings_matrix)
-eval_plot = md.evaluate(history=hist)
+md.evaluate(history=hist)

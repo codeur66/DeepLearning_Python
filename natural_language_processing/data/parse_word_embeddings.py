@@ -59,6 +59,7 @@ class ParseWordEmbeddings:
     @classmethod
     def store_h5py(cls, embedding_matrix):
         ParseWordEmbeddings.hdf.create_dataset("external_dataset.h5py",
+                                               compression="gzip",
                                                data=embedding_matrix)
 
 #
