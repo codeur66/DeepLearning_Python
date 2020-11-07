@@ -21,9 +21,6 @@ class ParseWordEmbeddings:
     glove_dir = config.external_data_sources.word_embeddings
     file_name = config.external_data_sources.embeddings_file_name
 
-    from h5py import File
-    hdf = File("/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/external_dataset.h5py", "w")
-
     # embeddings is a dictionary that maps the word indices to an associated vector.
     @classmethod
     def embeddings_vectors(cls):
@@ -58,16 +55,11 @@ class ParseWordEmbeddings:
 
     @classmethod
     def store_h5py(cls, embedding_matrix):
-        ParseWordEmbeddings.hdf.create_dataset("external_dataset.h5py",
-                                               compression="gzip",
-                                               data=embedding_matrix)
-
-#
-# from natural_language_processing.data.text_processing import TextProcessing
-# data_proc = TextProcessing()
-
-#
-# from natural_language_processing.data.parse_word_embeddings import ParseWordEmbeddings
-# word_index = data_proc.indexing_informs_tokenizer()
-# embeddings_matrix = ParseWordEmbeddings.create_embeddings_matrix(word_index) # the pretrainned weights of NN
-# ParseWordEmbeddings.store_h5py(embeddings_matrix)
+        try:
+            from h5py import File
+            hdf = File(ParseWordEmbeddings.config.external_data_sources.EXTERNAL_DATA_FILENAME, "w")
+        except IOError:
+            print("The external file failed to open for write.")
+        else:
+            hdf.create_dataset("external_dataset.h5py", compression="gzip", data=embedding_matrix)
+            hdf.close()

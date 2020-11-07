@@ -2,6 +2,7 @@ import numpy as np
 from natural_language_processing.configurations.configuration_infrastructure import Config
 from natural_language_processing.configurations.configurations import CFG
 from keras.preprocessing.text import Tokenizer
+
 """TextProcessing, different data sources
 may be added in the pipeline for other models or the current may need extension.
 In contrast to ParseWordEmbeddings class which holds external data source - pretrained.
@@ -77,42 +78,24 @@ class TextProcessing:
     # HDF5 have the pros of much faster I/O and compressed size than
     # SQL storage and the dis of memory vs the solid storage.
     def store_h5py(self, x_train, y_train, x_val, y_val):
+        try:
+            from h5py import File
+            hdf = File(self.config.data.HDFS_INTERNAL_DATA_FILENAME, "w")
+        except IOError:
+            print("The internal file failed to open for write.")
+        else:
+            group_data = hdf.create_group("dataset")
 
-        from h5py import File
-        hdf = File("/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/internal_dataset.h5py", "w")
-        group_data = hdf.create_group("dataset")
+            group_x_train = group_data.create_group("train/x_train")
+            group_y_train = group_data.create_group("train/y_train")
+            group_x_val = group_data.create_group("val/x_val")
+            group_y_val = group_data.create_group("val/y_val")
 
-        group_x_train = group_data.create_group("train/x_train")
-        group_y_train = group_data.create_group("train/y_train")
-        group_x_val = group_data.create_group("val/x_val")
-        group_y_val = group_data.create_group("val/y_val")
+            group_x_train.create_dataset("x_trainset",data=x_train,compression="gzip")
+            group_y_train.create_dataset("y_trainset",data=y_train,compression="gzip")
 
-        group_x_train.create_dataset("x_trainset", data=x_train, compression="gzip",)
-        group_y_train.create_dataset("y_trainset", data=y_train, compression="gzip",)
+            group_x_val.create_dataset("x_valset",data=x_val,compression="gzip")
+            group_y_val.create_dataset("y_valset",data=y_val,compression="gzip")
+            hdf.close()
 
-        group_x_val.create_dataset("x_valset", data=x_val, compression="gzip",)
-        group_y_val.create_dataset("y_valset", data=y_val, compression="gzip",)
         return
-
-def menu():
-    choice = input("What data do you want to include: internal only, press: 1), internal and external, press: 12")
-    if choice == 1:
-        print("Creation of internal data file.")
-        data_proc = TextProcessing()
-        data_proc.process_train_data()
-        x_train, y_train, x_val, y_val = data_proc.split_data()
-        data_proc.store_h5py(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
-    else:
-        data_proc = TextProcessing()
-        data_proc.process_train_data()
-        x_train, y_train, x_val, y_val = data_proc.split_data()
-        data_proc.store_h5py(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
-
-        print("Creation of data files, internal and embeddings. ")
-        from natural_language_processing.data.parse_word_embeddings import ParseWordEmbeddings
-        word_index = data_proc.indexing_informs_tokenizer()
-        embeddings_matrix = ParseWordEmbeddings.create_embeddings_matrix(word_index) # the pretrainned weights of NN
-        ParseWordEmbeddings.store_h5py(embeddings_matrix)
-
-menu()
-

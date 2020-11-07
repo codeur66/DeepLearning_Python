@@ -4,17 +4,25 @@ EXTERNAL_FILE_HDF5 = "../data/external_dataset.h5py"
 
 
 def get_internal_hdf():
-    hdf_in = File(INTERNAL_FILE_HDF5, "r")
-    x_trnset = hdf_in.get("/dataset/train/x_train/x_trainset")
-    x_valset = hdf_in.get("/dataset/train/x_train/x_valset")
-    y_trnset = hdf_in.get("/dataset/train/y_train/y_trainset")
-    y_valset = hdf_in.get("/dataset/train/y_train/y_valset")
-    return x_trnset, x_valset, y_trnset, y_valset, hdf_in
+    try:
+        hdf_in = File(INTERNAL_FILE_HDF5, "r")
+    except IOError:
+        print("The internal file failed to open for read.")
+    else:
+        x_trnset = hdf_in.get("/dataset/train/x_train/x_trainset")
+        x_valset = hdf_in.get("/dataset/train/x_train/x_valset")
+        y_trnset = hdf_in.get("/dataset/train/y_train/y_trainset")
+        y_valset = hdf_in.get("/dataset/train/y_train/y_valset")
+        return x_trnset, x_valset, y_trnset, y_valset, hdf_in
 
 
 def get_external_hdf():
-    hdf_ext =File(EXTERNAL_FILE_HDF5, "r")
-    return hdf_ext.get("hdf_embedding_matrix"), hdf_ext
+    try:
+        hdf_ext =File(EXTERNAL_FILE_HDF5, "r")
+        return hdf_ext.get("hdf_embedding_matrix"), hdf_ext
+    except IOError:
+        print("The external file failed to open for read.")
+
 
 
 # import numpy as np
