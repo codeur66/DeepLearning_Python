@@ -6,4 +6,5 @@ Deep learning for:
  -  natural language processing
  -  time series, sequences           
  
- Designed in Object Oriented Development taking into account the machine learning differences versus a strict OOP style.
+ Designed in Object Oriented Development taking into careful consideration 
+ the need of machine learning versus following a strict OOP style.
