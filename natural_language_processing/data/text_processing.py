@@ -91,11 +91,11 @@ class TextProcessing:
             group_x_val = group_data.create_group("val/x_val")
             group_y_val = group_data.create_group("val/y_val")
 
-            group_x_train.create_dataset("x_trainset",data=x_train,compression="gzip")
-            group_y_train.create_dataset("y_trainset",data=y_train,compression="gzip")
+            group_x_train.create_dataset("x_trainset", data=x_train, compression="gzip")
+            group_y_train.create_dataset("y_trainset", data=y_train, compression="gzip")
 
-            group_x_val.create_dataset("x_valset",data=x_val,compression="gzip")
-            group_y_val.create_dataset("y_valset",data=y_val,compression="gzip")
+            group_x_val.create_dataset("x_valset", data=x_val, compression="gzip")
+            group_y_val.create_dataset("y_valset", data=y_val, compression="gzip")
             hdf.close()
 
         return

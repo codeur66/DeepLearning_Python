@@ -1,11 +1,13 @@
 from h5py import File
-INTERNAL_FILE_HDF5 = "../data/internal_dataset.h5py"
-EXTERNAL_FILE_HDF5 = "../data/external_dataset.h5py"
+from natural_language_processing.configurations.configuration_infrastructure import Config
+from natural_language_processing.configurations.configurations import CFG
+
+config = Config.from_json(CFG)
 
 
 def get_internal_hdf():
     try:
-        hdf_in = File(INTERNAL_FILE_HDF5, "r")
+        hdf_in = File(config.data.HDFS_INTERNAL_DATA_FILENAME, "r")
     except IOError:
         print("The internal file failed to open for read.")
     else:
@@ -18,13 +20,7 @@ def get_internal_hdf():
 
 def get_external_hdf():
     try:
-        hdf_ext =File(EXTERNAL_FILE_HDF5, "r")
-        return hdf_ext.get("hdf_embedding_matrix"), hdf_ext
+        hdf_ext = File(config.external_data_sources.HDFS_EXTERNAL_DATA_FILENAME, "r")
+        return hdf_ext.get("external_dataset"), hdf_ext
     except IOError:
         print("The external file failed to open for read.")
-
-
-
-# import numpy as np
-# n1 = np.zeros(shape=x_trn_set.shape)
-# print(x_trn_set.read_direct(np))

@@ -12,7 +12,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Flatten, Dense
 from tensorflow.keras.utils import plot_model
 from natural_language_processing.model.BaseModel import BaseModel
-import natural_language_processing.model.read_hdf5 as rd
 
 
 class Model(BaseModel):
@@ -29,13 +28,15 @@ class Model(BaseModel):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.model = None
+        self.hdf_ext=None
+        self.hdf_in=None
+
 
     def load_data(self, **kwargs):
-        x_trn_set, y_trn_set, x_val_set, y_val_set, hdf_in = rd.get_internal_hdf()
-        embeddings, hdf_ext = rd.get_external_hdf()
-        # hdf_in.close()
-        # hdf_ext.close()
-        return x_trn_set, y_trn_set, x_val_set, y_val_set, embeddings
+        import natural_language_processing.model.read_hdf5 as rd
+        x_trn_set, y_trn_set, x_val_set, y_val_set, self.hdf_in = rd.get_internal_hdf()
+        embeddings, self.hdf_ext = rd.get_external_hdf()
+        return x_trn_set[:], y_trn_set[:], x_val_set[:], y_val_set[:], embeddings[:]
 
     def build_architecture(self):
         self.model = Sequential()
@@ -85,9 +86,21 @@ class Model(BaseModel):
         plt.legend()
         plt.show()
 
+    def close_files(self):
+        self.hdf_in.close()
+        self.hdf_ext.close()
 
 md = Model(CFG)
 x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
 md.build_architecture().build()
 hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, embeddings_matrix=embeddings_matrix)
 md.evaluate(history=hist)
+md.close_files()
+# import psutil, os
+    # p = psutil.Process(os.getpid())
+    # print(p)
+    # print(p.open_files())
+
+close_files()
+# hdf_in.close()
+# hdf_ext.close()

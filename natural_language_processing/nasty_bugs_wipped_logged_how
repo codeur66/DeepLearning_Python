@@ -42,7 +42,7 @@ kears.utils.plot_model(model, show_shapes=True)
 
 
 
-#######Corrected Version#######
+#Fixed Error#
 
 Model: "sequential"
 _________________________________________________________________
@@ -78,3 +78,28 @@ Remove from the JSON file the Keras classes you wanted to serialize
 #2#
 params = json.loads(json.dumps(cfg), default = lambda x: x.__dict__, object_hook=HelperObject)
 converts everything to dict but the build-in classes of Keras do not serialized this way.
+
+
+
+********************Error*****************************************
+x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
+TypeError: 'NoneType' object is not iterable
+*******************************************************************
+
+#Fixed Error#
+forgot to delete the global variables
+HDFS_INTERNAL_DATA_FILENAME
+HDFS_EXTERNAL_DATA_FILENAME
+re declared with wrong path
+overwriting the configurtion.py
+
+
+
+********************Error*****************************************
+AttributeError: 'HelperObject' object has no attribute 'HDFS_EXTERNAL_DATA_FILENAME'
+*******************************************************************
+#Fixed Error#
+the HDFS_EXTERNAL_DATA_FILENAME passed through the wrong JSON parent object.
+config.external_data_sources.HDFS_EXTERNAL_DATA_FILENAME
+instead of
+config.data_sources.HDFS_EXTERNAL_DATA_FILENAME

@@ -57,9 +57,9 @@ class ParseWordEmbeddings:
     def store_h5py(cls, embedding_matrix):
         try:
             from h5py import File
-            hdf = File(ParseWordEmbeddings.config.external_data_sources.EXTERNAL_DATA_FILENAME, "w")
+            hdf = File(ParseWordEmbeddings.config.external_data_sources.HDFS_EXTERNAL_DATA_FILENAME, "w")
         except IOError:
             print("The external file failed to open for write.")
         else:
-            hdf.create_dataset("external_dataset.h5py", compression="gzip", data=embedding_matrix)
+            hdf.create_dataset("external_dataset", data=embedding_matrix, compression="gzip")
             hdf.close()

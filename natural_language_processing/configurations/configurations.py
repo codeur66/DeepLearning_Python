@@ -5,7 +5,7 @@ CFG = {
         "word_embeddings": "/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/glove.6B"
         , "embeddings_file_name": "glove.6B.100d.txt"
         , "embeddings_dimension": 100  # embedding vectors must = unique tokens (weights)
-        , "HDFS_EXTERNAL_DATA_FILENAME": "/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/internal_dataset.h5py"
+        , "HDFS_EXTERNAL_DATA_FILENAME": "/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/external_dataset.h5py"
     },
     "data": {
         "path_train_data": '/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/aclImdb/aclImdb'
