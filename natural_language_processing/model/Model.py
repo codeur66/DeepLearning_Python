@@ -101,6 +101,3 @@ md.close_files()
     # print(p)
     # print(p.open_files())
 
-close_files()
-# hdf_in.close()
-# hdf_ext.close()
