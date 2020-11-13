@@ -28,15 +28,14 @@ class Model(BaseModel):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.model = None
-        self.hdf_ext=None
-        self.hdf_in=None
-
+        self.hdf_ext = None
+        self.hdf_in = None
 
     def load_data(self, **kwargs):
         import natural_language_processing.model.read_hdf5 as rd
-        x_trn_set, y_trn_set, x_val_set, y_val_set, self.hdf_in = rd.get_internal_hdf()
+        x_train, y_train, x_val, y_val, self.hdf_in = rd.get_internal_hdf()
         embeddings, self.hdf_ext = rd.get_external_hdf()
-        return x_trn_set[:], y_trn_set[:], x_val_set[:], y_val_set[:], embeddings[:]
+        return x_train[:], y_train[:], x_val[:], y_val[:], embeddings[:]
 
     def build_architecture(self):
         self.model = Sequential()
@@ -45,7 +44,7 @@ class Model(BaseModel):
         self.model.add(Dense(32, activation='relu'))  # implements 32 outputs = activation(dot(input, kernel) + bias)
         self.model.add(Dense(1, activation='sigmoid'))
         self.model.summary()
-        plot_model(self.model, to_file=Model.path_model+"model.png", show_shapes=True)
+        plot_model(self.model, to_file=Model.path_model + "model.png", show_shapes=True)
         return self
 
     def build(self, **kwargs):
@@ -60,13 +59,17 @@ class Model(BaseModel):
                            weighted_metrics=None)
 
     def train(self, **kwargs):
-        history = self.model.fit(x_train,
-                                 y_train,
-                                 epochs=Model.config.train.epochs,
-                                 batch_size=Model.config.train.batch_size,
-                                 validation_data=(x_val, y_val))
-        self.model.save_weights(Model.path_model+"trained_model.h5")
-        return history
+        try:
+            history = self.model.fit(x_train,
+                                     y_train,
+                                     epochs=Model.config.train.epochs,
+                                     batch_size=Model.config.train.batch_size,
+                                     validation_data=(x_val, y_val))
+            self.model.save_weights(Model.path_model + "trained_model.h5")
+
+            return history
+        except RuntimeError: # if memory crashes
+            raise RuntimeError
 
     def evaluate(self, **kwargs):
         import matplotlib.pyplot as plt
@@ -87,17 +90,21 @@ class Model(BaseModel):
         plt.show()
 
     def close_files(self):
-        self.hdf_in.close()
-        self.hdf_ext.close()
+        try:
+            self.hdf_in.close()
+            self.hdf_ext.close()
+        except IOError:
+            raise Exception("Failed to close the open files of data ")
+
 
 md = Model(CFG)
 x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
+print(x_train.shape)
+print(y_train.shape)
+print(x_val.shape)
+print(y_val.shape)
+print(embeddings_matrix.shape)
+
 md.build_architecture().build()
 hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, embeddings_matrix=embeddings_matrix)
 md.evaluate(history=hist)
-md.close_files()
-# import psutil, os
-    # p = psutil.Process(os.getpid())
-    # print(p)
-    # print(p.open_files())
-

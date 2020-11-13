@@ -4,18 +4,17 @@ from natural_language_processing.configurations.configurations import CFG
 
 config = Config.from_json(CFG)
 
-
 def get_internal_hdf():
     try:
         hdf_in = File(config.data.HDFS_INTERNAL_DATA_FILENAME, "r")
     except IOError:
         print("The internal file failed to open for read.")
     else:
-        x_trnset = hdf_in.get("/dataset/train/x_train/x_trainset")
-        x_valset = hdf_in.get("/dataset/train/x_train/x_valset")
-        y_trnset = hdf_in.get("/dataset/train/y_train/y_trainset")
-        y_valset = hdf_in.get("/dataset/train/y_train/y_valset")
-        return x_trnset, x_valset, y_trnset, y_valset, hdf_in
+        x_trnset = hdf_in.get("/dataset/train/x_trainset")
+        y_trnset = hdf_in.get("/dataset/train/y_trainset")
+        x_valset = hdf_in.get("/dataset/val/x_valset")
+        y_valset = hdf_in.get("/dataset/val/y_valset")
+        return x_trnset, y_trnset, x_valset, y_valset, hdf_in
 
 
 def get_external_hdf():

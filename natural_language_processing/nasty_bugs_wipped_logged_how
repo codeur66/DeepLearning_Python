@@ -25,13 +25,17 @@ dense_1 (Dense)              (None, 1)                 33          in model.add(
 
 #3# print the shapes of the data and structures and variables related to the network.
 
-x_train, y_train, x_val, y_val ;  (200, 100) (200,) (10000, 100) (10000,) <---- same dimension
-Found 100 coefficients. <---- same dimension
-Found 400000 word vectors.<---- same dimension
-Found 88582 unique tokens.<---- same dimension
-embedding_matrix shape :  (10000, 100)    <---- same dimension
-Found 100 coefficients. <---- same dimension
-Found 400000 word vectors. <----same dimension
+x_train, y_train, x_val, y_val ;
+(200, 100)
+(200,)
+(10000, 100)
+(10000,) <---- same dimension
+Found 100 coefficients. <---- OK dimension,  *P
+Found 400000 word vectors.<---- *A
+Found 88582 unique tokens.<---- do not care
+embedding_matrix shape :  (10000, 100)    <---- OK dimension
+Found 100 coefficients. <---- OK, is equal to *P
+Found 400000 word vectors. <----Ok, is equal to  *A
 
 
 #4# plot

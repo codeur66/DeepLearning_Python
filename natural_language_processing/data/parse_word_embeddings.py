@@ -49,7 +49,7 @@ class ParseWordEmbeddings:
         for word, i in word_index.items():
             if i < max_words:
                 embedding_vector = embedding_indexed_vectors.get(word)
-                if embedding_vector is not None:  # words not found in the embedding index will be zeros
+                if embedding_vector is not None:  # if words not found in the embedding index will be zeros
                     embedding_matrix[i] = embedding_vector
         return embedding_matrix
 
