@@ -12,5 +12,5 @@ or the internal and the external, to check the best option for the Neural Networ
 *The Network have to learn to do the classification. 
 
 * The configuration on datasets and the trainning 
-  setted to be into one file using json serialization, when it was possible.  
+  setted to be into one file using object serialization, when it was possible.  
   
