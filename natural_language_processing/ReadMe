@@ -1,0 +1,8 @@
+Supervised NLP on movies reviews. 
+
+*Use and process of texts from movies' reviews named "internal dataset" and 
+ pretrainned world embeddings vocabulary, named "external".
+
+*Reviews belong into two classes positive or negative. 
+
+*The Network have to learn to do this classification. 
