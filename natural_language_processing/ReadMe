@@ -9,8 +9,8 @@ Supervised NLP on movies reviews.
 *Based on menu the user chooses if want to process and store as HDFS the internal dataset only
 or the internal and the external, to check the best option for the Neural Network.
 
-*The Network have to learn to do the classification. 
+*The Network has to learn to do the classification. 
 
-* The configuration on datasets and the trainning 
+*The configuration on datasets's processing and the model trainning 
   setted to be into one file using object serialization, when it was possible.  
   
