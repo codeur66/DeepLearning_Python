@@ -1,5 +1,6 @@
-<b>Supervised NLP on movies reviews.</b> 
-
+***************************************
+Supervised NLP on movies reviews.
+***************************************
 *Reviews belong into two classes positive or negative. 
 
 *Use and processing of texts from movies' reviews named "internal dataset" along with 
@@ -9,3 +10,4 @@
 or the internal and the external, to check the best option for the Neural Network.
 
 *The Network have to learn to do the classification. 
+
