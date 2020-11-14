@@ -2,8 +2,8 @@
 
 
 ************************Error*************************************
-ValueError: Input 0 of layer dense is incompatible with the layer:
-expected axis -1 of input shape to have value 1000000 but received
+ValueError: Input 0 of layer dense is incompatible with the layer:             SO it says the dimensions of Embedding out is != Dense Input  
+expected axis -1 of input shape to have value 1000000 but received                            
 input with shape [None, 10000].
 ******************************************************************
 The investigation to solution:
@@ -18,9 +18,9 @@ embedding (Embedding)        (None, 10000, 100)        1000000
 _________________________________________________________________
 flatten (Flatten)            (None, 1000000)           0           <--- here seems a multiplication of (None x 10000 x 100)
 _________________________________________________________________  the error says "Input 0 of layer dense is incompatible..."
-dense (Dense)                (None, 32)                32000032    the layer 0 is the Dense, it took weights of shape (10000 x 100)
-_________________________________________________________________  but embedding gives 10000x100 so we check the embedding layer
-dense_1 (Dense)              (None, 1)                 33          in model.add(Embedding(max_words, embeddings_dimension, input_length=max_len))
+dense (Dense)                (None, 32)                32000032    the layer 0 is the Dense, it took weights of shape (10000, 100) = x_val
+_________________________________________________________________  Check the:
+dense_1 (Dense)              (None, 1)                 33          model.add(Embedding(max_words, embeddings_dimension, input_length=max_len))
 =================================================================  The Flatten does not affect the dimensions only flattens whatever it takes.
 
 #3# print the shapes of the data and structures and variables related to the network.
