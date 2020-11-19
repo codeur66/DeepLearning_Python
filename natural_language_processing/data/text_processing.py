@@ -24,14 +24,15 @@ class TextProcessing:
         self.training_samples = self.config.data.training_samples
         self.validation_samples = self.config.data.validation_samples
         self.max_words = self.config.data.max_words
-        self.tokenizer = Tokenizer(num_words=self.max_words)
+        self.tokenizer = Tokenizer(num_words=self.max_words) # the max numer of words to keep, the same for train and tests
 
     # Reads the folders stores in data structures the corresponding data (data and labels) for the train.
-    def process_train_data(self):
+
+    def process_train_tst_data(self, path_data, filename):
         import os
-        train_dir = os.path.join(self.config.data.path_train_data, 'train')
+        data_dir = os.path.join(path_data, filename)
         for label_type in ['neg', 'pos']:
-            dir_name = os.path.join(train_dir, label_type)
+            dir_name = os.path.join(data_dir, label_type)
             for file_type in os.listdir(dir_name):
                 if file_type[-4:] == '.txt':
                     fl_path = os.path.join(dir_name, file_type)
@@ -77,7 +78,7 @@ class TextProcessing:
 
     # HDF5 have the pros of much faster I/O and compressed size than
     # SQL storage and the dis of memory vs the solid storage.
-    def store_h5py(self, x_train, y_train, x_val, y_val):
+    def store_h5py(self, x_train, y_train, x_val, y_val, x_test, y_test):
         try:
             from h5py import File
             hdf = File(self.config.data.HDFS_INTERNAL_DATA_FILENAME, "w")
@@ -88,6 +89,7 @@ class TextProcessing:
 
             group_train = group_data.create_group("train")
             group_val = group_data.create_group("val")
+            group_test = group_data.create_group("test")
 
             group_train.create_dataset("x_trainset", data=x_train, compression="gzip")
             group_train.create_dataset("y_trainset", data=y_train, compression="gzip")
@@ -95,6 +97,8 @@ class TextProcessing:
             group_val.create_dataset("x_valset", data=x_val, compression="gzip")
             group_val.create_dataset("y_valset", data=y_val, compression="gzip")
 
+            group_test.create_dataset("x_testset", data=x_test, compression="gzip")
+            group_test.create_dataset("y_testset", data=y_test, compression="gzip")
+
             hdf.close()
 
-        return

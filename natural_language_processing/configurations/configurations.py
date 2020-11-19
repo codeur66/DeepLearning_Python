@@ -1,4 +1,3 @@
-import tensorflow.keras.optimizers
 
 CFG = {
     "external_data_sources": {
@@ -10,11 +9,13 @@ CFG = {
     "data": {
         "path_train_data": '/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/aclImdb/aclImdb'
         , "maxlen": 100
-        , "training_samples": 100  # ! see (A) at the end
+        , "training_samples": 10000  # ! see (A) at the end
         , "validation_samples": 2000
         , "max_words": 10000
         , "HDFS_INTERNAL_DATA_FILENAME": "/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/internal_dataset.h5py"
-    },
+
+        , "path_test_data": '/home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing/data/aclImdb/aclImdb'
+        },
     "model": {
         "hidden_layers_nodes": 32
         , "last_layer_nodes": 1
@@ -26,7 +27,7 @@ CFG = {
 
     },
     "train": {
-        "epochs": 20
+        "epochs": 10
         , "batch_size": 32
     }
 }
