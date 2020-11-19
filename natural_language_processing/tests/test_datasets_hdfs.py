@@ -40,7 +40,7 @@ class TestDatasets(unittest.TestCase):
 
     def test_datatype_get_external_hdf(self):
         self.assertEqual(type(self.embeddings[:]).__name__, 'ndarray')
-        self.assertEqual(str(self.hdf_ext), '<HDF5 file "external_dataset.h5py" (mode r)>', "HEY")
+        self.assertEqual(str(self.hdf_ext), '<HDF5 file "external_dataset.h5py" (mode r)>')
 
     def tearDown(self) -> None:
         self.hdf_in.close()
