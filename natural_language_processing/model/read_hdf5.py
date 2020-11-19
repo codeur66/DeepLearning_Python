@@ -4,7 +4,6 @@ from natural_language_processing.configurations.configurations import CFG
 
 config = Config.from_json(CFG)
 
-
 def get_internal_hdf():
     try:
         hdf_in = File(config.data.HDFS_INTERNAL_DATA_FILENAME, "r")
@@ -15,9 +14,7 @@ def get_internal_hdf():
         y_trnset = hdf_in.get("/dataset/train/y_trainset")
         x_valset = hdf_in.get("/dataset/val/x_valset")
         y_valset = hdf_in.get("/dataset/val/y_valset")
-        x_testset = hdf_in.get("/dataset/test/x_testset")
-        y_testset = hdf_in.get("/dataset/test/y_testset")
-        return x_trnset, y_trnset, x_valset, y_valset, x_testset, y_testset, hdf_in
+        return x_trnset, y_trnset, x_valset, y_valset, hdf_in
 
 
 def get_external_hdf():

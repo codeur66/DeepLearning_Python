@@ -25,26 +25,23 @@ class Model(BaseModel):
     last_layer_act_func = config.model.last_layer_activation_function
     path_model = config.model.path_model
 
-    def __init__(self, cfg, hdf_in_flag, hdf_ext_flag):
+    def __init__(self, cfg, hdf_in, hdf_ext):
         super().__init__(cfg)
         self.model = None
-        self.hdf_in_flag = hdf_in_flag
-        self.hdf_ext_flag = hdf_ext_flag
-        self.hdf_in = None
-        self.hdf_ext = None
+        self.hdf_in = hdf_in
+        self.hdf_ext = hdf_ext
 
     def load_data(self, **kwargs):
-        import natural_language_processing.model.read_hdf5 as rd
-        if (self.hdf_in_flag, self.hdf_ext_flag) == (True, False):
-            x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
-            return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], None
-        elif (self.hdf_in_flag, self.hdf_ext_flag) == (True, True):
-            x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
-            embeddings, self.hdf_ext = rd.get_external_hdf()
-            return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], embeddings[:]
-        else:
-            print("Did not provided appropriate datasets' choices for the model.")
-
+            import natural_language_processing.model.read_hdf5 as rd
+            if (self.hdf_in, self.hdf_ext) == (True, False):
+                x_train, y_train, x_val, y_val, self.hdf_in = rd.get_internal_hdf()
+                return x_train[:], y_train[:], x_val[:], y_val[:], None
+            elif (self.hdf_in, self.hdf_ext) == (True, True):
+                x_train, y_train, x_val, y_val, self.hdf_in = rd.get_internal_hdf()
+                embeddings, self.hdf_ext = rd.get_external_hdf()
+                return x_train[:], y_train[:], x_val[:], y_val[:], embeddings[:]
+            else:
+                print("Did not provided appropriate datasets's choices for the model.")
     def build_architecture(self):
         self.model = Sequential()
         self.model.add(Embedding(Model.max_words, Model.embeddings_dimension, input_length=Model.max_len))
@@ -56,7 +53,7 @@ class Model(BaseModel):
         return self
 
     def build(self, **kwargs):
-        if self.hdf_ext_flag is True:
+        if self.hdf_ext is True:
             self.model.layers[0].set_weights([embeddings_matrix])
             # Freeze the embeddings layer, pretrained parts should not be updated to forget what they learned
             self.model.layers[0].trainable = False
@@ -78,7 +75,7 @@ class Model(BaseModel):
             self.model.save_weights(Model.path_model + "trained_model.h5")
 
             return history
-        except RuntimeError:  # if memory crashes
+        except RuntimeError: # if memory crashes
             raise RuntimeError
 
     def evaluate(self, **kwargs):
@@ -98,9 +95,6 @@ class Model(BaseModel):
         plt.title('Training and validation loss')
         plt.legend()
         plt.show()
-        # evaluate on test data
-        self.model.load_weights(Model.path_model+'trained_model.h5')
-        self.model.evaluate(x_test, y_test)
 
     def close_files(self):
         try:
@@ -110,11 +104,13 @@ class Model(BaseModel):
             raise Exception("Failed to close the open files of datasets ")
 
 
+
+
 if __name__ == '__main__':
     use_internal_data = True
     use_embeddings_data = False
-    md = Model(CFG, use_internal_data, use_embeddings_data)
-    x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
-    md.build_architecture().build(embeddings_matrix=embeddings_matrix)
+    md = Model(CFG, hdf_in=use_internal_data, hdf_ext=use_embeddings_data)
+    x_train, y_train, x_val, y_val, embeddings_matrix = md.load_data()
+    md.build_architecture().build(embeddings_matrix = embeddings_matrix)
     hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
-    md.evaluate(history=hist, x_test=x_test, y_test=y_test)
+    md.evaluate(history=hist)

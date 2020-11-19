@@ -1,4 +1,5 @@
 import json
+import tensorflow.keras.optimizers as optim
 
 class Config:
     """Config class which contains data, train and model hyperparameters"""

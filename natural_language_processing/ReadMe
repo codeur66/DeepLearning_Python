@@ -4,10 +4,10 @@ Supervised NLP on movies reviews.
 *Reviews belong into two classes positive or negative. 
 
 *Use and processing of texts from movies' reviews named "internal dataset" along with 
- pretrained world embeddings vocabulary, named "external".
+ pretrainned world embeddings vocabulary, named "external".
 
-*Based on menu the user chooses if want to process the texts and store as HDFS the internal dataset only
-or the internal and the external, such as to check the best option for the Neural Network.
+*Based on menu the user chooses if want to process and store as HDFS the internal dataset only
+or the internal and the external, to check the best option for the Neural Network.
 
 *The Network has to learn to do the classification. 
 
