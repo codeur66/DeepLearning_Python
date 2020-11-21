@@ -8,3 +8,6 @@ Deep learning for:
  
  Designed in Object Oriented Development taking into careful consideration 
  the need of machine learning rather than following strict OOP style.
+ 
+ 
+  

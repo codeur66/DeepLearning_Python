@@ -16,3 +16,5 @@ or the internal and the external, such as to check the best option for the Neura
 *The configuration on datasets's processing and the model trainning 
   setted to be into one file using object serialization, when it was possible.  
   
+ * Jenkins CI installed, connected to Github DeepLearning_job_,
+   created job, set executors, scheduled jobs, build.

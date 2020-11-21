@@ -22,8 +22,5 @@ http://localhost:8080
 # logs:
 /var/log/jenkins/jenkins.log
 
-#find publicIP for github webhook
+# find publicIP for github webhook
 https://whatismyipaddress.com/ip/
-
-# docker run -v /your/home:/var/jenkins_home -p 8080:8080 jenkins
-# docker run -v /home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing:/var/jenkins_home -p 8080:8080 jenkins
