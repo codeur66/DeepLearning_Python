@@ -4,3 +4,26 @@ pip install matplotlib
 sudo apt install graphviz # for keras.utils.plot_model, (optional installation, for debugging)
 pip install pydot  # for keras.utils.plot_model
 pip install psutil # to see the open files and close them (optional installation, for many different files)
+
+
+# Use on CI Jenkins server on Github repo:
+
+sudo su
+sudo systemctl start jenkins
+systemctl start jenkins
+systemctl status jenkins
+
+stores files here: /var/jenkins_home.
+
+# access jeknins:
+http://myServer:8080
+http://localhost:8080
+
+# logs:
+/var/log/jenkins/jenkins.log
+
+#find publicIP for github webhook
+https://whatismyipaddress.com/ip/
+
+# docker run -v /your/home:/var/jenkins_home -p 8080:8080 jenkins
+# docker run -v /home/nikoscf/PycharmProjects/DeepLearningWithPython/natural_language_processing:/var/jenkins_home -p 8080:8080 jenkins
