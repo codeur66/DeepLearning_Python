@@ -5,6 +5,8 @@ Supervised NLP on movies reviews.
 
 *Use and processing of texts from movies' reviews named "internal dataset" along with 
  pretrained world embeddings vocabulary, named "external".
+ 
+*HDFS 
 
 *Based on menu the user chooses if want to process the texts and store as HDFS the internal dataset only
 or the internal and the external, such as to check the best option for the Neural Network.
