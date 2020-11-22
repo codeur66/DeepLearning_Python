@@ -9,7 +9,6 @@ pip install psutil # to see the open files and close them (optional installation
 # Use on CI Jenkins server on Github repo:
 
 sudo su
-sudo systemctl start jenkins
 systemctl start jenkins
 systemctl status jenkins
 
@@ -24,3 +23,5 @@ http://localhost:8080
 
 # find publicIP for github webhook
 https://whatismyipaddress.com/ip/
+
+# install or check if is installed the git and github plugin in jenkins
