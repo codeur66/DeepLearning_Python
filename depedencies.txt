@@ -21,20 +21,21 @@ http://localhost:8080
 # logs:
 /var/log/jenkins/jenkins.log
 
-# find publicIP for github webhook
-https://whatismyipaddress.com/ip/
+*********Connection Github and Jenkins***********
 
-# install or check if is installed the git and github plugin in jenkins
-
+# install or check if is installed the git and github plugin in Jenkins.
+# check to do polling from Git, set the paths to project and source management set the clone url of github.
 # install ServerXP client to make your localIP public accessible to Jenkins.
 curl -O https://portal.socketxp.com/download/linux/socketxp && chmod +wx socketxp && sudo mv socketxp /usr/local/bin
 
-# create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
-# Get an auth tokken and you copy paste it to your terminal.
-To create a tunnel, allowing you to expose local or private web servers to the public.
-Get the publicURL from the tunnel and paste it into the Github Webhook.
+# 1. create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
+# 2. Get an auth tokken and you copy paste it to your terminal.
+# 3. To create a tunnel,
+     https://portal.socketxp.com/#/tunnels
+    allowing you to expose local or private web servers to the public.
+    Get the publicURL from the tunnel and paste it into the Github: ...publicURL/github-webhook/
+# 4. In github check the  "Active" and the other oprions you like  and the create the webhook
+    With green color means triggered OK, with grey means it is idle yet, with red is wrong.
 
 
-snap install relay
 
-https://webhookrelay.com/blog/2017/11/23/github-jenkins-guide/
