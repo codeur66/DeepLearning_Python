@@ -25,3 +25,11 @@ http://localhost:8080
 https://whatismyipaddress.com/ip/
 
 # install or check if is installed the git and github plugin in jenkins
+
+# install ServerXP client to make your localIP public accessible to Jenkins.
+curl -O https://portal.socketxp.com/download/linux/socketxp && chmod +wx socketxp && sudo mv socketxp /usr/local/bin
+
+# create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
+# Get an auth tokken and you copy paste it to your terminal.
+To create a tunnel, allowing you to expose local or private web servers to the public.
+Get the publicURL from the tunnel and paste it into the Github Webhook.
