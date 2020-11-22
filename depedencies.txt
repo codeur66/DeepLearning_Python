@@ -33,3 +33,8 @@ curl -O https://portal.socketxp.com/download/linux/socketxp && chmod +wx socketx
 # Get an auth tokken and you copy paste it to your terminal.
 To create a tunnel, allowing you to expose local or private web servers to the public.
 Get the publicURL from the tunnel and paste it into the Github Webhook.
+
+
+snap install relay
+
+https://webhookrelay.com/blog/2017/11/23/github-jenkins-guide/
