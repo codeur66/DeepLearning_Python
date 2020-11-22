@@ -23,9 +23,10 @@ http://localhost:8080
 
 *********Connection Github and Jenkins***********
 
-# 0. install or check if is installed the git and github plugin in Jenkins.
-# 1. check to do polling from Git.
-# 2. Jenkins should shave the git project url and the clone url (.git) to automatically build.
+# 0. start Jenkins.
+# 1. install or check if is installed the git and github plugin in Jenkins.
+# 2. check to do polling from Git.
+# 3. Jenkins should shave the git project url and the clone url (.git) to automatically build.
 
 
 #0.  install ServerXP client to make your local IP public accessible to Jenkins.
