@@ -46,7 +46,7 @@ http://localhost:8080
 ****** Build Monitor plugin *********
 
 Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
-Plugin can be downloaded.
+Plugin can be downloaded. Green color = build passed
 
 ***** Dashboard Plugin View **********
 
