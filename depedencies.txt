@@ -43,4 +43,18 @@ http://localhost:8080
 # 4. In github check the  "Active" and the other oprions you like  and the create the webhook
     With green color means triggered OK, with grey means it is idle yet, with red is wrong.
 
+****** Build Monitor plugin *********
+
+Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
+Plugin can be downloaded.
+
+***** Dashboard Plugin View **********
+
+***** Metric Plugin ******************
+
+***** Test Results Analyser **********
+
+***** Job DSL Plugin *****************
+
+****** Build Pipeline Plugin *********
 
