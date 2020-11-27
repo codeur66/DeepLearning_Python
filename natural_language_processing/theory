@@ -1,32 +1,32 @@
 The two fundamental deep-learning algorithms for sequence processing
-are recurrent neural networks and 1D convnets (the same in machine vision but 1D).
+are:
+ 1. recurrent neural networks and
+ 2. 1D convnets (the same in machine vision but in 1D).
 
-Document classification and timeseries classification, such as identifying the
-topics of an article or the author of a book
+Uses in:
+Document classification and timeseries classification identifying the
+  topics of an article or the author of a book
 or the time a users gonna get his service or his product,
 or the time we gonna solve his problem on VOIP fixed telecom network,
 or when the radio access signal gonna drop in which antenna
 or when a stuck order gonna unstack
 or in time how close a service gonna fail when a manual action happens
- and the service writes dirty record on the DB,
-or the prediction for each user of his/her rate of interest for a bank in x time
-or if the loans are close to each other
+or the prediction for each user of his/her rate of interest - sentiment analysis.
+or which loans are going to default
 or sequence-to-sequence learning, such as decoding an English sentence into
  French for machine translation jobs,
-or sentiment analysis, such as classifying the sentiment of tweets/movie/service
- views as positive or negative
 or timeseries forecasting, such as predicting the future weather/market strength at a certain
  location, given recent weather/(market,products) data.
 etc real business problems i have seen.
 
 The DL techniques are identical between the above tasks, but the data wrangling
  and preparation is not close between them.
-* DNN  models map the statistical structure of written language.
 
 
-   Text processing:
 
-1.
+*******NLP*******
+
+1. Text Processing
 1.1  Segment text into words, and transform each word into a vector
 1.2  Segment text into characters, and transform each character into a vector.
 1.3* Extract n-grams of words or characters, and transform each n-gram into a vector.
@@ -34,36 +34,33 @@ The DL techniques are identical between the above tasks, but the data wrangling
     but the sequence of the words in a sentence is not held, is random structured.
    This is not suitable for very efficient language processing models,
    its for the lightweight division - logistic regression, random forests.
-   1D convnets and RNN do not need bag-of-words and are better in this way.
+   But 1D convnets and RNN do not need bag-of-words and are better in this way,
+   because DNN  models map the statistical structure of written language.
 
-   Different units into which you can break down text (1/2 or 3) is called
-   tokenization.
+   All the above step are called tokenization.
 
+********* Next Step*******
 2. Vectorizing text is the process of transforming text into numeric tensors.
    applying some tokenization scheme and then associating numeric vectors.
-    "One hot", "word embeddings" are two ways of vectorizing.
+    "One hot", "word embeddings" are two ways of vectorization.
 
+********** DNN Model*************
 3. These vectors are packed into the DNN.
 
-<Keras has built-in utilities for doing one-hot encoding of text at the word level
+Keras has built-in utilities for doing one-hot encoding of text at the word level
 You should use these utilities, because
 they take care of a number of important features such as stripping special characters
 from strings and only taking into account the N most common words in your dataset
->
 
-Why word embeddings ?
+***********Word embeddings*******
 Word representations obtained from one-hot encoding or hashing are
-sparse, high-dimensional, and hardcoded, word
+sparse, high-dimensional, and hardcoded. Word
 embeddings are dense, relatively low-
 dimensional, and learned from data.
 There are two ways to obtain word embeddings:
-1. Learn word embeddings (such as document classification
-or sentiment prediction)
-2. Pretrained word embeddings.
-Word embeddings are
-meant to map human language into a geometric space (such as L2 distance).
-In addition to distance,may want
-specific directions in the embedding space to be meaningful.
-What makes a good word-embedding space depends heavily on the task because
-every language is flexible and different so we learn a
-new embedding space with every new task
+1. Learn word embeddings (such as document classification or sentiment prediction)
+s2. Pretrained word embeddings.
+Word embeddings are meant to map human language into a geometric space (such as L2 distance).
+In addition to distance,may want specific directions in the embedding space to be meaningful.
+What makes a good word-embedding space depends heavily on the TASK because
+every language is flexible and different so we learn a new embedding space with every new task

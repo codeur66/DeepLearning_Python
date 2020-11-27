@@ -1,0 +1,57 @@
+# Use on CI Jenkins server on Github repo:
+
+sudo su
+systemctl start jenkins
+systemctl status jenkins
+
+stores files here: /var/jenkins_home.
+
+# access jeknins:
+http://myServer:8080
+http://localhost:8080
+
+# logs:
+/var/log/jenkins/jenkins.log
+
+*********Connection Github and Jenkins***********
+
+# 0. start Jenkins.
+# 1. install or check if is installed the git and github plugin in Jenkins.
+# 2. check to do polling from Git.
+# 3. Jenkins should shave the git project url and the clone url (.git) to automatically build.
+
+
+#0.  install ServerXP client to make your local IP public accessible to Jenkins.
+    curl -O https://portal.socketxp.com/download/linux/socketxp && chmod +wx socketxp && sudo mv socketxp /usr/local/bin
+# 1. create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
+# 2. Get an auth tokken and you copy paste it to your terminal.
+# 3. To create a tunnel:
+   socketxp connect http://localhost:8080
+
+    or visit for more details:
+    https://portal.socketxp.com/#/tunnels
+    allowing you to expose local or private web servers to the public.
+    Get the publicURL from the tunnel and paste it into the Github webhooks:
+     ...publicURL/github-webhook/
+# 4. In github check the  "Active" and the other options you like  and create the webhook
+    With green color means triggered OK, with grey means it is idle yet, with red failed.
+
+
+Jenkins useful plugins to install:
+
+Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
+
+
+****** Build Monitor plugin *********
+Monitor with Green for Succeed and Red for failed, the builds in separated windows.
+***** Dashboard Plugin View **********
+
+***** Metric Plugin ******************
+
+***** Test Results Analyser **********
+
+***** Job DSL Plugin *****************
+
+***** Build Pipeline Plugin *********
+
+jenkinsfile should always be in the root directory of the project
