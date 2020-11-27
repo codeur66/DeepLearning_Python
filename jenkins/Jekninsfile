@@ -1,0 +1,32 @@
+pipeline {
+    agent none
+    stages{
+        stage('build'){
+            agent{
+                docker{
+                    image 'python:node-build'
+                }
+            }
+            steps{
+                sh -c 'echo starts the data pipeline'
+                sh -c 'python /home/nikoscf/PycharmProjects/DeepLearningWithPython/
+                        natural_language_processing/data/start_data_pipeline.py
+            }
+            steps{
+                sh -c 'echo starts the model'
+                sh -c 'python /home/nikoscf/PycharmProjects/DeepLearningWithPython/
+                            natural_language_processing/model/Model.py
+            }
+        }
+        stage('test'){
+                sh -c 'echo start the tests'
+                sh '/home/nikoscf/PycharmProjects/DeepLearningWithPython/
+                    natural_language_processing/utils/run_every_test.sh'
+        }
+        stage('deploy'){
+
+        }
+    }
+
+
+}

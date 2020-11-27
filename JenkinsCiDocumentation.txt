@@ -18,10 +18,12 @@ http://localhost:8080
 # 0. start Jenkins.
 # 1. install or check if is installed the git and github plugin in Jenkins.
 # 2. check to do polling from Git.
-# 3. Jenkins should shave the git project url and the clone url (.git) to automatically build.
+# 3. Jenkins should shave the git project url and the clone url (.git) to automatically
+     or to trigger build.
 
 
-#0.  install ServerXP client to make your local IP public accessible to Jenkins.
+#0.  install ServerXP client to make your local IP public accessible.
+    allowing you to expose local or private web servers to the public.
     curl -O https://portal.socketxp.com/download/linux/socketxp && chmod +wx socketxp && sudo mv socketxp /usr/local/bin
 # 1. create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
 # 2. Get an auth tokken and you copy paste it to your terminal.
@@ -30,7 +32,7 @@ http://localhost:8080
 
     or visit for more details:
     https://portal.socketxp.com/#/tunnels
-    allowing you to expose local or private web servers to the public.
+
     Get the publicURL from the tunnel and paste it into the Github webhooks:
      ...publicURL/github-webhook/
 # 4. In github check the  "Active" and the other options you like  and create the webhook
@@ -40,7 +42,6 @@ http://localhost:8080
 Jenkins useful plugins to install:
 
 Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
-
 
 ****** Build Monitor plugin *********
 Monitor with Green for Succeed and Red for failed, the builds in separated windows.
