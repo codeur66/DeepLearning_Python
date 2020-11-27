@@ -34,19 +34,25 @@ http://localhost:8080
 # 1. create an account to connect your SocketXP Agent with the SocketXP Cloud Service.
 # 2. Get an auth tokken and you copy paste it to your terminal.
 # 3. To create a tunnel:
-    socketxp connect http://localhost:8080
+   socketxp connect http://localhost:8080
+
     or visit for more details:
     https://portal.socketxp.com/#/tunnels
     allowing you to expose local or private web servers to the public.
     Get the publicURL from the tunnel and paste it into the Github webhooks:
      ...publicURL/github-webhook/
-# 4. In github check the  "Active" and the other oprions you like  and the create the webhook
-    With green color means triggered OK, with grey means it is idle yet, with red is wrong.
+# 4. In github check the  "Active" and the other options you like  and create the webhook
+    With green color means triggered OK, with grey means it is idle yet, with red failed.
 
-****** Build Monitor plugin *********
+
+Jenkins useful plugins to install:
+
 
 Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
-Plugin can be downloaded. Green color = build passed
+
+
+****** Build Monitor plugin *********
+Monitor with Green for Succeed and Red for failed, the builds in separated windows.
 
 ***** Dashboard Plugin View **********
 
