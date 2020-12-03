@@ -12,6 +12,11 @@ http://localhost:8080
 
 # logs:
 /var/log/jenkins/jenkins.log
+# jobs:
+/var/lib/jenkins/jobs
+#
+/var/lib/jenkins/workspace
+
 
 *********Connection Github and Jenkins***********
 
@@ -38,14 +43,41 @@ http://localhost:8080
 # 4. In github check the  "Active" and the other options you like  and create the webhook
     With green color means triggered OK, with grey means it is idle yet, with red failed.
 
+************************************************************
+*****       Jenkins useful plugins to install     **********
+************************************************************
+if a plugin is not in the available, download it from the web then:
+Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin
 
-Jenkins useful plugins to install:
 
-Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin (if there is not in the available).
+****** Cubertura plugin *********
+-Install Cubertura
+-In UI, enable "Publish Coverage Report" publisher in the Post-build Actions of the Job.
+-In "Coverage Metrics Targets" section, we can define what we consider to be the minimum
+    acceptable levels of code coverage.
+    Press "Advanced" button.
+
+****** Code Test Coverage ***********
+-pip install coverage
+-run tests and populate to HTML through XML:
+    coverage run MyDirectory/testMyFile.py 1 1 2 3
+    python -m coverage xml -o ./reports/coverage.xml
+
+-Check if is installed <Junit plugin> in Jenkins. Gives quick and easy access to the tests.
+
+
+
 
 ****** Build Monitor plugin *********
 Monitor with Green for Succeed and Red for failed, the builds in separated windows.
 ***** Dashboard Plugin View **********
+
+
+********Pipeline Build Step***********
+if not installed throws: java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
+
+link tutorial: https://www.lambdatest.com/blog/jenkins-pipeline-tutorial/
+***** Pipeline: REST API *************
 
 ***** Metric Plugin ******************
 
@@ -55,4 +87,25 @@ Monitor with Green for Succeed and Red for failed, the builds in separated windo
 
 ***** Build Pipeline Plugin *********
 
-jenkinsfile should always be in the root directory of the project
+
+*********Errors**********************
+******
+when do <import> or <from> a module.
+ImportError: No module name
+        set the PYTHONPATH in Jenkins.
+        import sys
+        import os
+        # jenkins exposes the workspace directory through env.
+        sys.path.append(os.environ['WORKSPACE'])
+*****
+java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
+        install: Pipeline Build Step
+*****
+
+****************************************
+
+************Know How********************
+-jenkinsfile should always be in the root directory of the project
+-if Jenkins runs slow delete prev build history,
+  -  YourJob > Configure > General > Discard Old Builds
+  -  Manage Jenkins > Troubleshooting > Manage Old Data

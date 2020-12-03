@@ -1,5 +1,9 @@
 import unittest
 import natural_language_processing.model.read_hdf5 as rd
+import sys
+import os
+# jenkins exposes the workspace directory through env. with this code can do import
+sys.path.append(os.environ['WORKSPACE'])
 
 
 class TestDatasets(unittest.TestCase):
