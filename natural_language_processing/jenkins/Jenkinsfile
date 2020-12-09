@@ -3,9 +3,8 @@ pipeline {
         stages {
             stage ('Build') {
                 steps{
-
+                    echo 'Build data pipeline'
                      sh  '''
-                     echo 'Build data pipeline'
                             python natural_language_processing/data/start_data_pipeline.py'
                          '''
                 }
@@ -24,7 +23,7 @@ pipeline {
                             python natural_language_processing/utils/run_every_test.sh
                         '''
                      }
-                }
+           }
            stage("Report"){
                  steps {
                     sh  ''' echo 'Code Coverage'
@@ -33,9 +32,9 @@ pipeline {
                             coverage xml -o natural_language_processing/tests/reports/coverage.xml
                         '''
                         }
-                 post{
-                always{
-                    step([$class: 'CoberturaPublisher',
+                post{
+                    always{
+                            step([$class: 'CoberturaPublisher',
                                    autoUpdateHealth: false,
                                    autoUpdateStability: false,
                                    coberturaReportFile: 'natural_language_processing/tests/reports/coverage.xml',
@@ -46,7 +45,8 @@ pipeline {
                                    onlyStable: true,
                                    sourceEncoding: 'ASCII',
                                    zoomCoverageChart: true])
-                }
-            }
+                   }
+               }
         }
+    }
 }
