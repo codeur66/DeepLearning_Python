@@ -1,23 +1,7 @@
 pipeline {
     agent any
         stages {
-            stage ('Build') {
-                steps{
-                    echo 'Build data pipeline'
-                     sh  'python natural_language_processing/data/start_data_pipeline.py'
 
-                }
-                steps{
-                    echo 'Build Model'
-                     sh ' python natural_language_processing/model/Model.py'
-                }
-            }
-           stage('Test'){
-                steps{
-                    echo 'Run Tests'
-                    sh 'python natural_language_processing/utils/run_every_test.sh'
-                     }
-           }
            stage("Report"){
                  steps {
                     sh  ''' echo 'Code Coverage'
