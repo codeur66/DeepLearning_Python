@@ -5,7 +5,7 @@ pipeline {
            stage("Report"){
                  steps {
                     sh  ''' echo 'Code Coverage'
-                            coverage run natural_language_processing/utils/run_every_test.sh
+                            coverage run natural_language_processing/tests/test_dataset_hdfs.py
                             coverage report
                             coverage xml -o natural_language_processing/tests/reports/coverage.xml
                         '''
