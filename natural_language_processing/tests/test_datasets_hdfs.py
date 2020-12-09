@@ -1,10 +1,9 @@
 import unittest
-import natural_language_processing.model.read_hdf5 as rd
 import sys
 import os
 # jenkins exposes the workspace directory through env. with this code can do import
-sys.path.append(os.environ['WORKSPACE'])
-
+sys.path.append(os.environ['DeepLearningWithPython'])
+import natural_language_processing.model.read_hdf5 as rd
 
 class TestDatasets(unittest.TestCase):
     print("Tests if every dataset type is not empty and is ndarray.")
