@@ -101,6 +101,16 @@ java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
 -if Jenkins runs slow delete prev build history,
   -  YourJob > Configure > General > Discard Old Builds
   -  Manage Jenkins > Troubleshooting > Manage Old Data
+- Disable credential for Jenkins Admin, if you are not in a team:
+    do sudo vi /var/lib/jenkins/config.xml
+    write :i for edit,
+        if you get a W10: Warning: Changing a readonly file
+        do : sudo su, then: chmod 777 config.xml
+    set <useSecurity>false</useSecurity>
+    write :qw, press enter, in terminal write: cat config.xml to see the changes
+    do: sudo systemctl restart jenkins
+             systemctl status jenkins
+
 
 ****** Code Test Coverage ***********
 -pip install coverage
@@ -108,5 +118,14 @@ java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
     coverage run MyDirectory/testMyFile.py 1 1 2 3
     python -m coverage xml -o ./reports/coverage.xml
 
--Check if is installed <Junit plugin> in Jenkins. Gives quick and easy access to the tests.
+**to import module**
+    in terminal:  export PYTHONPATH="${PYTHONPATH}:/home/nikoscf/PycharmProjects"
+    or in python module: sys.path.append("/home/nikoscf/PycharmProjects/")
+
+coverage run test.py
+coverage report
+# This will create a folder at the current working directory with the name “htmlcov”.Open .html files
+coverage html
+
+-In Jeknins:check if is installed <Junit plugin> in Jenkins. Gives quick and easy access to the tests.
 

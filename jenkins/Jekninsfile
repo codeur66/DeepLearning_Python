@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     stages{
         stage('build'){
             agent{
@@ -8,25 +8,22 @@ pipeline {
                 }
             }
             steps{
-                sh -c 'echo starts the data pipeline'
-                sh -c 'python /home/nikoscf/PycharmProjects/DeepLearningWithPython/
-                        natural_language_processing/data/start_data_pipeline.py
+                 sh  'python natural_language_processing/data/start_data_pipeline.py'
             }
             steps{
-                sh -c 'echo starts the model'
-                sh -c 'python /home/nikoscf/PycharmProjects/DeepLearningWithPython/
-                            natural_language_processing/model/Model.py
+                 sh  'python natural_language_processing/model/Model.py'
             }
         }
         stage('test'){
-                sh -c 'echo start the tests'
-                sh '/home/nikoscf/PycharmProjects/DeepLearningWithPython/
-                    natural_language_processing/utils/run_every_test.sh'
+                sh  'echo start the tests'
+                echo "Code Coverage"
+                sh  ''' source activate ${BUILD_TAG}
+                        coverage run natural_language_processing/utils/run_every_test.sh 1 1 2 3
+                        python -m coverage xml -o ./reports/coverage.xml
+                    '''
         }
         stage('deploy'){
 
         }
     }
-
-
 }
