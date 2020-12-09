@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+        stages {
+            stage ('Build') {
+                agent{
+                        docker{
+                            image 'python:node-build'
+                        }
+                    }
+                steps{
+                     sh  '''
+                            echo 'Build data pipeline'
+                            python natural_language_processing/data/start_data_pipeline.py'
+                         '''
+                }
+                steps{
+                     sh '''
+                            echo 'Build Model'
+                            python natural_language_processing/model/Model.py
+                        '''
+                }
+           stage('Test'){
+                steps{
+                    sh '''
+                            echo 'Run Tests'
+                            python natural_language_processing/utils/run_every_test.sh
+                        '''
+                     }
+                }
+           stage("Report"){
+                 steps {
+
+                    sh  ''' echo 'Code Coverage'
+                            coverage run natural_language_processing/utils/run_every_test.sh
+                            coverage report
+                            coverage xml -o natural_language_processing/tests/reports/coverage.xml
+                        '''
+                        }
+                 post{
+                always{
+                    step([$class: 'CoberturaPublisher',
+                                   autoUpdateHealth: false,
+                                   autoUpdateStability: false,
+                                   coberturaReportFile: 'natural_language_processing/tests/reports/coverage.xml',
+                                   failNoReports: false,
+                                   failUnhealthy: false,
+                                   failUnstable: false,
+                                   maxNumberOfBuilds: 10,
+                                   onlyStable: true,
+                                   sourceEncoding: 'ASCII',
+                                   zoomCoverageChart: true])
+                }
+            }
+        }
+    }
+}
