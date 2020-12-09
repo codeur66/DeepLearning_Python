@@ -9,9 +9,6 @@ class Config:
         self.train = train
         self.model = model
 
-    def default(self, object):
-        return  json.JSONEncoder.default()
-
     @classmethod
     def from_json(cls, cfg):
         """Creates config from json"""
