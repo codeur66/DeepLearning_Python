@@ -19,6 +19,7 @@ pipeline {
                             python natural_language_processing/model/Model.py
                         '''
                 }
+            }
            stage('Test'){
                 steps{
                     sh '''
@@ -29,7 +30,6 @@ pipeline {
                 }
            stage("Report"){
                  steps {
-
                     sh  ''' echo 'Code Coverage'
                             coverage run natural_language_processing/utils/run_every_test.sh
                             coverage report
