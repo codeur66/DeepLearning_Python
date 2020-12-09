@@ -4,24 +4,18 @@ pipeline {
             stage ('Build') {
                 steps{
                     echo 'Build data pipeline'
-                     sh  '''
-                            python natural_language_processing/data/start_data_pipeline.py'
-                         '''
+                     sh  'python natural_language_processing/data/start_data_pipeline.py'
+
                 }
                 steps{
-
-                     sh '''
-                         echo 'Build Model'
-                            python natural_language_processing/model/Model.py
-                        '''
+                    echo 'Build Model'
+                     sh ' python natural_language_processing/model/Model.py'
                 }
             }
            stage('Test'){
                 steps{
-                    sh '''
-                            echo 'Run Tests'
-                            python natural_language_processing/utils/run_every_test.sh
-                        '''
+                    echo 'Run Tests'
+                    sh 'python natural_language_processing/utils/run_every_test.sh'
                      }
            }
            stage("Report"){
