@@ -2,11 +2,6 @@ pipeline {
     agent any
         stages {
             stage ('Build') {
-                agent{
-                        docker{
-                            image 'python:node-build'
-                        }
-                    }
                 steps{
                      sh  '''
                             echo 'Build data pipeline'
