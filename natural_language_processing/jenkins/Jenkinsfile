@@ -3,14 +3,14 @@ pipeline {
         stages {
             stage ('Build') {
                 steps{
+                    echo 'Build data pipeline'
                      sh  '''
-                            echo 'Build data pipeline'
                             python natural_language_processing/data/start_data_pipeline.py'
                          '''
                 }
                 steps{
+                     echo 'Build Model'
                      sh '''
-                            echo 'Build Model'
                             python natural_language_processing/model/Model.py
                         '''
                 }
