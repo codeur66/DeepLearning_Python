@@ -11,7 +11,7 @@ from natural_language_processing.configurations.configurations import CFG
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Flatten, Dense
 from tensorflow.keras.utils import plot_model
-from natural_language_processing.model.BaseModel import BaseModel
+from natural_language_processing.model.base_model import BaseModel
 
 
 class Model(BaseModel):
@@ -56,6 +56,7 @@ class Model(BaseModel):
         return self
 
     def build(self, **kwargs):
+        # Freeze the embeddings if we choose world embeddings
         if self.hdf_ext_flag is True:
             self.model.layers[0].set_weights([embeddings_matrix])
             # Freeze the embeddings layer, pretrained parts should not be updated to forget what they learned
