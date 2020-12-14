@@ -69,6 +69,10 @@ Monitor with Green for Succeed and Red for failed, the builds in separated windo
 if not installed throws: java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
 link tutorial: https://www.lambdatest.com/blog/jenkins-pipeline-tutorial/
 
+***** Docker  ******************
+
+***** Docker pipeline ****************
+
 ***** Pipeline: REST API *************
 
 ***** Metric Plugin ******************

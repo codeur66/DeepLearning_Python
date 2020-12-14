@@ -1,0 +1,29 @@
+******Start docker on booting or disable it ********
+systemctl enable docker
+systemctl disable docker
+
+- see what  docker image runs on the system
+    docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                    PORTS               NAMES
+aa52eb68ca5b        hello-world         "/hello"            13 hours ago        Exited (0) 13 hours ago                       stoic_shannon
+<the sha of image>  <image> ..................................................................................................<random name of image>
+
+- start the image
+    docker start stoic_shannon
+- check if running
+    docker ps -a
+    See the time in:
+    STATUS
+    About <x> seconds ago
+- stop the image
+    docker stop stoic_shannon
+ - docker history of an image
+    docker history --no-trunc <img name>
+
+Developemnt Workflow:
+
+1. Create and test individual containers for each component
+    of your application by first creating Docker images.
+2. Assemble your containers and supporting infrastructure into a complete application.
+3. Test, share, and deploy your complete containerized application.
