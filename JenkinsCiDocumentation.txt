@@ -14,18 +14,20 @@ http://localhost:8080
 /var/log/jenkins/jenkins.log
 # jobs:
 /var/lib/jenkins/jobs
-#
+# projects
 /var/lib/jenkins/workspace
 
 
 *********Connection Github and Jenkins***********
+***********Step 1************
 
-# 0. start Jenkins.
+# 0. start Jenkins server.
 # 1. install or check if is installed the git and github plugin in Jenkins.
 # 2. check to do polling from Git.
-# 3. Jenkins should shave the git project url and the clone url (.git) to automatically
+# 3. Jenkins should have the git project url and the clone url (.git) to automatically
      or to trigger build.
 
+************Step 2**************
 
 #0.  install ServerXP client to make your local IP public accessible.
     allowing you to expose local or private web servers to the public.
@@ -46,7 +48,7 @@ http://localhost:8080
 ************************************************************
 *****       Jenkins useful plugins to install     **********
 ************************************************************
-if a plugin is not in the available, download it from the web then:
+if a plugin is not in the available, download it from the web then do:
 Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin
 
 
@@ -58,18 +60,17 @@ Jenkins > Manage Jenkins > Plugins > Advanced > Upload the plugin
     Press "Advanced" button.
 
 
-
 ****** Build Monitor plugin *********
 Monitor with Green for Succeed and Red for failed, the builds in separated windows.
 
 ***** Dashboard Plugin View **********
 
-
 ********Pipeline Build Step***********
 if not installed throws: java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
 link tutorial: https://www.lambdatest.com/blog/jenkins-pipeline-tutorial/
 
-***** Docker  ******************
+***** Docker  ***********************
+Build Images from inside Jenkins pipeline with the Jenkinsfile
 
 ***** Docker pipeline ****************
 
@@ -88,7 +89,8 @@ link tutorial: https://www.lambdatest.com/blog/jenkins-pipeline-tutorial/
 ********         Errors             ******************
 ******************************************************
 **1**
-to do <import> or <from> a module when you got an Error msg: ImportError: No module name
+in Python to do <import> or <from> a module when you got
+an Error msg: ImportError: No module name
         import sys
         import os
         # jenkins exposes the workspace directory through env.
@@ -96,12 +98,13 @@ to do <import> or <from> a module when you got an Error msg: ImportError: No mod
 **2**
 java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
         install: Pipeline Build Step
-**3**
 
 *****************************************************
 ********          Know How      *********************
 *****************************************************
--jenkinsfile should always be in the root directory of the project
+-jenkinsfile should always be in the root directory of the project or
+change the dir path in Jenkins configuration.
+
 -if Jenkins runs slow delete prev build history,
   -  YourJob > Configure > General > Discard Old Builds
   -  Manage Jenkins > Troubleshooting > Manage Old Data
@@ -119,17 +122,22 @@ java.lang.NoSuchMethodError: No such DSL method 'pipeline' found among steps
 ****** Code Test Coverage ***********
 -pip install coverage
 -run tests and populate to HTML through XML:
-    coverage run MyDirectory/testMyFile.py 1 1 2 3
+    coverage run MyDirectory/testMyFile.py
     python -m coverage xml -o ./reports/coverage.xml
+    remove (-m) if throws error
 
 **to import module**
-    in terminal:  export PYTHONPATH="${PYTHONPATH}:/home/nikoscf/PycharmProjects"
-    or in python module: sys.path.append("/home/nikoscf/PycharmProjects/")
+    in terminal:
+    export PYTHONPATH="${PYTHONPATH}:/home/nikoscf/PycharmProjects"
+    or in python module:
+    sys.path.append("/home/nikoscf/PycharmProjects/")
 
-coverage run test.py
-coverage report
-# This will create a folder at the current working directory with the name “htmlcov”.Open .html files
-coverage html
+#create the xml for the cubertura
+    coverage report
+# This will create a folder at the current working directory with the name
+  “htmlcov”.Open .html files
+    coverage html
 
--In Jeknins:check if is installed <Junit plugin> in Jenkins. Gives quick and easy access to the tests.
+-In Jeknins:check if is installed <Junit plugin> in Jenkins.
+ Gives quick and easy access to the tests.
 

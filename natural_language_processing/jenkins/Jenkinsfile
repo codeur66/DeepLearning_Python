@@ -2,12 +2,15 @@ pipeline {
     agent any
         stages {
             stage ('Build') {
+                   steps{
+                        sh 'export PYTHONPATH="${PYTHONPATH}:DeepLearningWithPython/natural_language_processing"'
+                        }
                     steps {
                         echo 'Running build phase. '
                         sh   '''python natural_language_processing/data/start_data_pipeline.py
                                 python natural_language_processing/model/model.py'
                                '''
-                    }
+                        }
                 }
            stage("Report"){
                  steps {
