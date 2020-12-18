@@ -3,7 +3,7 @@ pipeline {
         stages {
             stage ('Build') {
                    steps{
-                        sh 'export PYTHONPATH="${PYTHONPATH}:DeepLearningWithPython/natural_language_processing"'
+                        sh 'export PYTHONPATH="${PYTHONPATH}:/natural_language_processing"'
                         }
                     steps {
                         echo 'Running build phase. '
