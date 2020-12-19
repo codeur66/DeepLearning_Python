@@ -4,14 +4,7 @@ pipeline {
             stage ('Build') {
                    steps{
                         sh "pwd"
-                        sh 'export PYTHONPATH="${PYTHONPATH}:/natural_language_processing"'
-                        }
-                    steps {
-                        echo 'Running build phase. '
-                        sh   '''python natural_language_processing/data/start_data_pipeline.py
-                                python natural_language_processing/model/model.py'
-                               '''
-                        }
+                   }
                 }
            stage("Report"){
                  steps {
