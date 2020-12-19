@@ -3,14 +3,9 @@ pipeline {
         stages {
             stage ('Build') {
                    steps{
-                        sh 'export PYTHONPATH="${PYTHONPATH}:/var/lib/jenkins/workspace/DeepLearningPipeline_job_/natural_language_processing"'
+                        sh 'export PYTHONPATH="${PYTHONPATH}:/var/lib/jenkins/workspace/DeepLearningPipeline_job_/natural_language_processing/"'
                         }
-                    steps {
-                        echo 'Running build phase. '
-                        sh   '''python natural_language_processing/data/start_data_pipeline.py
-                                python natural_language_processing/model/model.py'
-                               '''
-                        }
+
                 }
            stage("Report"){
                  steps {
