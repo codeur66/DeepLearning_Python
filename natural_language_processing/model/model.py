@@ -12,9 +12,15 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Flatten, Dense
 from tensorflow.keras.utils import plot_model
 from natural_language_processing.model.base_model import BaseModel
+import os.path
+from natural_language_processing.logging.LoggerCls import LoggerCls
 
 
 class Model(BaseModel):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    formatter = '%(name)s - %(levelname)s - Line No. : %(lineno)d - %(message)s'
+    logModel = LoggerCls("log_to_file", "Model", dir_path + "/Model.log", "w", formatter, "INFO")
+
     config = Config.from_json(CFG)
     embeddings_dimension = config.external_data_sources.embeddings_dimension
     max_words = config.data.max_words
@@ -35,73 +41,95 @@ class Model(BaseModel):
 
     def load_data(self, **kwargs):
         import natural_language_processing.model.read_hdf5 as rd
-        if (self.hdf_in_flag, self.hdf_ext_flag) == (True, False):
-            x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
-            return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], None
-        elif (self.hdf_in_flag, self.hdf_ext_flag) == (True, True):
-            x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
-            embeddings, self.hdf_ext = rd.get_external_hdf()
-            return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], embeddings[:]
-        else:
-            print("Did not provided appropriate datasets' choices for the model.")
+        try:
+            if (self.hdf_in_flag, self.hdf_ext_flag) == (True, False):
+                x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
+                return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], None
+            elif (self.hdf_in_flag, self.hdf_ext_flag) == (True, True):
+                x_trn, y_trn, x_valid, y_valid, x_tst, y_tst, self.hdf_in = rd.get_internal_hdf()
+                embeddings, self.hdf_ext = rd.get_external_hdf()
+                return x_trn[:], y_trn[:], x_valid[:], y_valid[:], x_tst[:], y_tst[:], embeddings[:]
+            else:
+                Model.logModel.error(
+                    "Did not provided an appropriate choice for the model to choose the training datasets.")
+                # print("Did not provided an appropriate choice for the model to choose the training datasets.")
+        except Exception("Error on <loan_data> method"):
+            raise Model.logModel.error(
+                "Did not provided an appropriate choice for the model to choose the training datasets.")
 
     def build_architecture(self):
-        self.model = Sequential()
-        self.model.add(Embedding(Model.max_words, Model.embeddings_dimension, input_length=Model.max_len))
-        self.model.add(Flatten())
-        self.model.add(Dense(32, activation='relu'))  # implements 32 outputs = activation(dot(input, kernel) + bias)
-        self.model.add(Dense(1, activation='sigmoid'))
-        self.model.summary()
-        plot_model(self.model, to_file=Model.path_model + "model.png", show_shapes=True)
-        return self
+        try:
+            Model.logModel.info("The model builds the architectures")
+            self.model = Sequential()
+            self.model.add(Embedding(Model.max_words, Model.embeddings_dimension, input_length=Model.max_len))
+            self.model.add(Flatten())
+            # 32 outputs with activation(dot(input, kernel) + bias)
+            self.model.add(Dense(32, activation='relu'))
+            self.model.add(Dense(1, activation='sigmoid'))
+            self.model.summary()
+            plot_model(self.model, to_file=Model.path_model + "model.png", show_shapes=True)
+            return self
+        except NotImplementedError:
+            Model.logModel.error("Error encountered while the model try to build the architecture")
 
     def build(self, **kwargs):
-        # Freeze the embeddings if we choose world embeddings
-        if self.hdf_ext_flag is True:
-            self.model.layers[0].set_weights([embeddings_matrix])
-            # Freeze the embeddings layer, pretrained parts should not be updated to forget what they learned
-            self.model.layers[0].trainable = False
+        try:
+            Model.logModel.info("The model configures the architecture")
+            # Freeze the embeddings if we choose world embeddings
+            if self.hdf_ext_flag is True:
+                self.model.layers[0].set_weights([kwargs['embeddings_matrix']])
+                # Freeze the embeddings layer, pretrained parts should not be updated to forget what they learned
+                self.model.layers[0].trainable = False
 
-        # Configures the model for training.
-        self.model.compile(optimizer="rmsprop",
-                           loss=Model.config.model.loss_function,
-                           metrics=Model.config.model.metrics,
-                           loss_weights=None,
-                           weighted_metrics=None)
+            # Configures the model for training.
+            self.model.compile(optimizer="rmsprop",
+                               loss=Model.config.model.loss_function,
+                               metrics=Model.config.model.metrics,
+                               loss_weights=None,
+                               weighted_metrics=None)
+        except NotImplementedError:
+            Model.logModel.error("Error encountered while the model configures the architecture")
 
     def train(self, **kwargs):
         try:
-            history = self.model.fit(x_train,
-                                     y_train,
+            Model.logModel.info("Starting the model training.")
+
+            history = self.model.fit(kwargs['x_train'].values(),
+                                     kwargs['y_train'].values(),
                                      epochs=Model.config.train.epochs,
                                      batch_size=Model.config.train.batch_size,
-                                     validation_data=(x_val, y_val))
+                                     validation_data=(kwargs['x_val'], kwargs['y_val']))
             self.model.save_weights(Model.path_model + "trained_model.h5")
 
             return history
-        except RuntimeError:  # if memory crashes
-            raise RuntimeError
+        except (RuntimeError, NotImplementedError):  # if memory crashes
+            Model.logModel.error("Error encountered while the model trains the model.")
+            raise NotImplementedError
 
     def evaluate(self, **kwargs):
-        import matplotlib.pyplot as plt
-        acc = hist.history["acc"]
-        val_acc = hist.history['val_acc']
-        loss = hist.history['loss']
-        val_loss = hist.history['val_loss']
-        epochs = range(1, len(acc) + 1)
-        plt.plot(epochs, acc, 'bo', label='Training acc')
-        plt.plot(epochs, val_acc, 'b', label='Validation acc')
-        plt.title('Training and validation accuracy')
-        plt.legend()
-        plt.figure()
-        plt.plot(epochs, loss, 'bo', label='Training loss')
-        plt.plot(epochs, val_loss, 'b', label='Validation loss')
-        plt.title('Training and validation loss')
-        plt.legend()
-        plt.show()
-        # evaluate on test data
-        self.model.load_weights(Model.path_model+'trained_model.h5')
-        self.model.evaluate(x_test, y_test)
+        try:
+            Model.logModel.info("Starts to create the evaluation plots of the model.")
+            import matplotlib.pyplot as plt
+            acc = plt.hist.history["acc"]
+            val_acc = plt.hist.history['val_acc']
+            loss = plt.hist.history['loss']
+            val_loss = plt.hist.history['val_loss']
+            epochs = range(1, len(acc) + 1)
+            plt.plot(epochs, acc, 'bo', label='Training acc')
+            plt.plot(epochs, val_acc, 'b', label='Validation acc')
+            plt.title('Training and validation accuracy')
+            plt.legend()
+            plt.figure()
+            plt.plot(epochs, loss, 'bo', label='Training loss')
+            plt.plot(epochs, val_loss, 'b', label='Validation loss')
+            plt.title('Training and validation loss')
+            plt.legend()
+            plt.show()
+            # evaluate on test data
+            self.model.load_weights(Model.path_model + 'trained_model.h5')
+            self.model.evaluate(kwargs['x_test'].values(), kwargs['y_test'].values)
+        except NotImplementedError:
+            Model.logModel.error("Error encountered on the model evaluation.")
 
     def close_files(self):
         try:
@@ -112,10 +140,18 @@ class Model(BaseModel):
 
 
 if __name__ == '__main__':
-    use_internal_data = True
-    use_embeddings_data = False
-    md = Model(CFG, use_internal_data, use_embeddings_data)
-    x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
-    md.build_architecture().build(embeddings_matrix=embeddings_matrix)
-    hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
-    md.evaluate(history=hist, x_test=x_test, y_test=y_test)
+
+    def exec_model_pipeline(use_internal_data, use_embeddings_data):
+        try:
+            md = Model(CFG, use_internal_data, use_embeddings_data)
+            x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
+
+            md.build_architecture().build(embeddings_matrix=embeddings_matrix)
+
+            hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
+
+            md.evaluate(history=hist, x_test=x_test, y_test=y_test)
+        except Exception("Error on <exec_model_pipeline> method"):
+            Model.logModel.error("Error encountered on method <exec_model_pipeline>")
+
+    exec_model_pipeline(use_internal_data=True, use_embeddings_data=False)

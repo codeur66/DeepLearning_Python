@@ -85,20 +85,23 @@ class TextProcessing:
         except IOError:
             print("The internal file failed to open for write.")
         else:
-            group_data = hdf.create_group("dataset")
+            try:
+                group_data = hdf.create_group("dataset")
 
-            group_train = group_data.create_group("train")
-            group_val = group_data.create_group("val")
-            group_test = group_data.create_group("test")
+                group_train = group_data.create_group("train")
+                group_val = group_data.create_group("val")
+                group_test = group_data.create_group("test")
 
-            group_train.create_dataset("x_trainset", data=x_train, compression="gzip")
-            group_train.create_dataset("y_trainset", data=y_train, compression="gzip")
+                group_train.create_dataset("x_trainset", data=x_train, compression="gzip")
+                group_train.create_dataset("y_trainset", data=y_train, compression="gzip")
 
-            group_val.create_dataset("x_valset", data=x_val, compression="gzip")
-            group_val.create_dataset("y_valset", data=y_val, compression="gzip")
+                group_val.create_dataset("x_valset", data=x_val, compression="gzip")
+                group_val.create_dataset("y_valset", data=y_val, compression="gzip")
 
-            group_test.create_dataset("x_testset", data=x_test, compression="gzip")
-            group_test.create_dataset("y_testset", data=y_test, compression="gzip")
+                group_test.create_dataset("x_testset", data=x_test, compression="gzip")
+                group_test.create_dataset("y_testset", data=y_test, compression="gzip")
+            except IOError:
+                print("Failed to store in hdfs")
 
             hdf.close()
 
