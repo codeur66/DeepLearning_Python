@@ -6,7 +6,7 @@ pipeline {
                         echo 'Set env python path workspace for imports'
                         sh 'export PYTHONPATH="${PYTHONPATH}:/var/lib/jenkins/workspace/DeepLearningPipeline_job_/natural_language_processing/"'
                         }
-                    steps {
+                   steps {
                         echo 'Running build phase. '
                         sh   'python data/start_data_pipeline.py'
                         sh   'python model/model.py'
