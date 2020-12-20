@@ -53,7 +53,7 @@ class Model(BaseModel):
                 Model.logModel.error(
                     "Did not provided an appropriate choice for the model to choose the training datasets.")
                 # print("Did not provided an appropriate choice for the model to choose the training datasets.")
-        except Exception("Error on <loan_data> method"):
+        except TypeError("Error on <loan_data> method"):
             raise Model.logModel.error(
                 "Did not provided an appropriate choice for the model to choose the training datasets.")
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
             hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
 
             md.evaluate(history=hist, x_test=x_test, y_test=y_test)
-        except Exception("Error on <exec_model_pipeline> method"):
+        except BaseException:
             Model.logModel.error("Error encountered on method <exec_model_pipeline>")
 
     exec_model_pipeline(use_internal_data=True, use_embeddings_data=False)
