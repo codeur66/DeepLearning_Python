@@ -48,9 +48,9 @@ class ParseWordEmbeddings:
             # print('Found %s coefficients.' % len(coefs))
             # print('Found %s word vectors.' % len(embedding_indexed_vectors))
             return embedding_indexed_vectors
-        except (IOError, FileNotFoundError, TypeError):
-            ParseWordEmbeddings.logToFile.logger.("Error encountered on method <embeddings_vectors>")
-
+        except (IOError, FileNotFoundError, TypeError) as e:
+            ParseWordEmbeddings.logToFile.logger.error("Error encountered on method <embeddings_vectors>")
+            ParseWordEmbeddings.logToFile.logger.error(e)
     # All sequences in a batch must have the same length to pack them into a single tensor,
     # so we do zero padding to shorter sequences, and the longer sequences are truncated.
 
