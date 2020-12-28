@@ -8,7 +8,7 @@ import os.path
 
 def menu():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s - Line No. : %(lineno)d - %(message)s'
+    formatter = '%(name)s - %(levelname)s  - %(message)s'
     logToFile = LoggerCls("log_to_file", "start_data_piepeline:", dir_path + "/data_piepeline.log", "w", formatter,
                         "INFO")
     logStream = LoggerCls("log_to_stdout", "start_data_pipeline: ", None, "w", formatter, "INFO")
@@ -65,8 +65,9 @@ def menu():
                                "internal only, press: 1, "
                                "internal and pretrained:2, "
                                "exit menu: 3 \n")
-    except RuntimeError:
+    except (TypeError, AttributeError, RuntimeError) as e:
         logToFile.error("Probably run out of enough memory for the data processing and storing.")
+        logToFile.error(e)
         raise Exception("Probably run out of enough memory for the data processing and storing.")
 
 

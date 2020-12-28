@@ -18,9 +18,8 @@ from natural_language_processing.logging.LoggerCls import LoggerCls
 
 class Model(BaseModel):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s - Line No. : %(lineno)d - %(message)s'
+    formatter = '%(name)s - %(levelname)s - %(message)s'
     logModel = LoggerCls("log_to_file", "Model", dir_path + "/Model.log", "w", formatter, "INFO")
-
     config = Config.from_json(CFG)
     embeddings_dimension = config.external_data_sources.embeddings_dimension
     max_words = config.data.max_words
@@ -53,13 +52,14 @@ class Model(BaseModel):
                 Model.logModel.error(
                     "Did not provided an appropriate choice for the model to choose the training datasets.")
                 # print("Did not provided an appropriate choice for the model to choose the training datasets.")
-        except TypeError("Error on <loan_data> method"):
+        except (TypeError, AttributeError, RuntimeError) as e:
+            Model.logModel.error(e)
             raise Model.logModel.error(
                 "Did not provided an appropriate choice for the model to choose the training datasets.")
 
     def build_architecture(self):
         try:
-            Model.logModel.info("The model builds the architectures")
+            Model.logModel.info("The model sets the network architecture")
             self.model = Sequential()
             self.model.add(Embedding(Model.max_words, Model.embeddings_dimension, input_length=Model.max_len))
             self.model.add(Flatten())
@@ -69,12 +69,13 @@ class Model(BaseModel):
             self.model.summary()
             plot_model(self.model, to_file=Model.path_model + "model.png", show_shapes=True)
             return self
-        except NotImplementedError:
+        except (TypeError, AttributeError, RuntimeError) as e:
             Model.logModel.error("Error encountered while the model try to build the architecture")
+            Model.logModel.error(e)
 
     def build(self, **kwargs):
         try:
-            Model.logModel.info("The model configures the architecture")
+            Model.logModel.info("Configuration of the hyperparameters")
             # Freeze the embeddings if we choose world embeddings
             if self.hdf_ext_flag is True:
                 self.model.layers[0].set_weights([kwargs['embeddings_matrix']])
@@ -87,24 +88,25 @@ class Model(BaseModel):
                                metrics=Model.config.model.metrics,
                                loss_weights=None,
                                weighted_metrics=None)
-        except NotImplementedError:
+        except (TypeError, AttributeError, RuntimeError) as e:
             Model.logModel.error("Error encountered while the model configures the architecture")
+            Model.logModel.error(e)
 
     def train(self, **kwargs):
         try:
             Model.logModel.info("Starting the model training.")
-
-            history = self.model.fit(kwargs['x_train'].values(),
-                                     kwargs['y_train'].values(),
+            history = self.model.fit(kwargs['x_train'],
+                                     kwargs['y_train'],
                                      epochs=Model.config.train.epochs,
                                      batch_size=Model.config.train.batch_size,
                                      validation_data=(kwargs['x_val'], kwargs['y_val']))
-            self.model.save_weights(Model.path_model + "trained_model.h5")
 
+            self.model.save_weights(Model.path_model + "trained_model.h5")
             return history
-        except (RuntimeError, NotImplementedError):  # if memory crashes
-            Model.logModel.error("Error encountered while the model trains the model.")
-            raise NotImplementedError
+        except (TypeError, AttributeError, RuntimeError) as e:
+            Model.logModel.error("Error on training")
+            Model.logModel.error(e)
+
 
     def evaluate(self, **kwargs):
         try:
@@ -128,30 +130,29 @@ class Model(BaseModel):
             # evaluate on test data
             self.model.load_weights(Model.path_model + 'trained_model.h5')
             self.model.evaluate(kwargs['x_test'].values(), kwargs['y_test'].values)
-        except NotImplementedError:
+        except (TypeError, AttributeError, RuntimeError) as e:
             Model.logModel.error("Error encountered on the model evaluation.")
+            Model.logModel.error(e)
 
     def close_files(self):
         try:
             self.hdf_in.close()
             self.hdf_ext.close()
-        except IOError:
-            raise Exception("Failed to close the open files of datasets ")
+        except IOError as e:
+            Model.logModel.error("Failed to close the open files of datasets ")
+            Model.logModel.error(e)
 
 
 if __name__ == '__main__':
-
     def exec_model_pipeline(use_internal_data, use_embeddings_data):
-        try:
-            md = Model(CFG, use_internal_data, use_embeddings_data)
-            x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
 
-            md.build_architecture().build(embeddings_matrix=embeddings_matrix)
+        md = Model(CFG, use_internal_data, use_embeddings_data)
+        x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
 
-            hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
+        md.build_architecture().build(embeddings_matrix=embeddings_matrix)
+        hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
 
-            md.evaluate(history=hist, x_test=x_test, y_test=y_test)
-        except BaseException:
-            Model.logModel.error("Error encountered on method <exec_model_pipeline>")
+        md.evaluate(history=hist, x_test=x_test, y_test=y_test)
+
 
     exec_model_pipeline(use_internal_data=True, use_embeddings_data=False)

@@ -12,7 +12,7 @@ import os.path
 
 class TextProcessing:
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s - Line No. : %(lineno)d - %(message)s'
+    formatter = '%(name)s - %(levelname)s  - %(message)s'
     logToFile = LoggerCls("log_to_file", "parse_word_ebeddings:", dir_path + "/data_piepeline.log", "w", formatter,
                           "INFO")
     logStream = LoggerCls("log_to_stdout", "WordEmbeddings: ", None, "w", formatter, "INFO")

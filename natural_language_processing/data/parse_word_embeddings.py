@@ -21,7 +21,7 @@ import os.path
 
 class ParseWordEmbeddings:
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s - Line No. : %(lineno)d - %(message)s'
+    formatter = '%(name)s - %(levelname)s  - %(message)s'
     logToFile = LoggerCls("log_to_file", "parse_word_ebeddings:", dir_path + "/data_piepeline.log", "w", formatter,
                         "INFO")
     logStream = LoggerCls("log_to_stdout", "WordEmbeddings: ", None, "w", formatter, "INFO")
@@ -49,7 +49,7 @@ class ParseWordEmbeddings:
             # print('Found %s word vectors.' % len(embedding_indexed_vectors))
             return embedding_indexed_vectors
         except (IOError, FileNotFoundError, TypeError):
-            ParseWordEmbeddings.logToFile.logger.error("Error encountered on method <embeddings_vectors>")
+            ParseWordEmbeddings.logToFile.logger.("Error encountered on method <embeddings_vectors>")
 
     # All sequences in a batch must have the same length to pack them into a single tensor,
     # so we do zero padding to shorter sequences, and the longer sequences are truncated.

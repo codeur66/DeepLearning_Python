@@ -1,5 +1,5 @@
 import logging
-
+from inspect import stack
 
 class LoggerCls:
 
@@ -22,14 +22,24 @@ class LoggerCls:
             stream_handler.setFormatter(formatter_)
             self.logger.addHandler(stream_handler)
 
+    def _extended_format(self):
+        _extended_format = " - Caller method: < " + stack()[2].function + ">" + \
+                           " - Line No.: " + str(stack()[2].lineno)
+        return _extended_format
+
     def debug(self, msg, **kwargs):
-        self.logger.debug(msg, **kwargs)
+        self.logger.debug(msg + self._extended_format(), **kwargs)
 
     def info(self, msg, **kwargs):
-        self.logger.info(msg, **kwargs)
+        self.logger.info(msg + self._extended_format(), **kwargs)
 
     def warning(self, msg, **kwargs):
-        self.logger.warning(msg, **kwargs)
+        self.logger.warning(msg + self._extended_format(), **kwargs)
+
+    def exception(self, msg, **kwargs):
+        self.logger.exception(msg, **kwargs)
 
     def error(self, msg, **kwargs):
-        self.logger.error(msg, **kwargs)
+        def exception(self, msg, **kwargs):
+            self.logger.exception(msg, **kwargs)
+        exception(self, msg,**kwargs)
