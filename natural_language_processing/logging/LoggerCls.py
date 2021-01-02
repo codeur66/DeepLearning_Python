@@ -13,7 +13,7 @@ class LoggerCls:
     def set_logger_type(self, log_type, filename, filemode, formatter):
         if log_type == "log_to_file":
             file_handler = logging.FileHandler(filename, filemode)
-            formatter_ = logging.Formatter(formatter)
+            formatter_ = logging.Formatter(formatter, datefmt='%Y-%m-%d %H:%M:%S')
             file_handler.setFormatter(formatter_)
             self.logger.addHandler(file_handler)
         elif log_type == "log_to_stdout":
@@ -23,7 +23,7 @@ class LoggerCls:
             self.logger.addHandler(stream_handler)
 
     def _extended_format(self):
-        _extended_format = " - Caller method: < " + stack()[2].function + ">" + \
+        _extended_format = " - Caller method: < " + stack()[2].function + " >" + \
                            " - Line No.: " + str(stack()[2].lineno)
         return _extended_format
 

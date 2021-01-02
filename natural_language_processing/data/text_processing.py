@@ -10,12 +10,13 @@ In contrast to ParseWordEmbeddings class which holds external data source - pret
 from natural_language_processing.logging.LoggerCls import LoggerCls
 import os.path
 
+
 class TextProcessing:
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s  - %(message)s'
-    logToFile = LoggerCls("log_to_file", "parse_word_ebeddings:", dir_path + "/data_piepeline.log", "w", formatter,
+    formatter = '%(asctime)s - %(levelname)s - %(name)s - %(message)s'
+    logToFile = LoggerCls("log_to_file", " data pipeline processor:", dir_path + "/data_pipeline.log", "w", formatter,
                           "INFO")
-    logStream = LoggerCls("log_to_stdout", "WordEmbeddings: ", None, "w", formatter, "INFO")
+    logToStream = LoggerCls("log_to_stdout", "data pipeline processor: ", None, "w", formatter, "INFO")
 
     from natural_language_processing.configurations.configuration_infrastructure import Config
     from natural_language_processing.configurations.configurations import CFG
@@ -56,8 +57,7 @@ class TextProcessing:
     def indexing_informs_tokenizer(self):
         self.tokenizer.fit_on_texts(self.texts)  # update vocabulary
         word_index = self.tokenizer.word_index  # create integer indices pre token.
-        TextProcessing.logStream.info('Found %s unique tokens.' % len(word_index))
-        # print('Found %s unique tokens.' % len(word_index))
+        TextProcessing.logToStream.info('Found %s unique tokens.' % len(word_index))
         return word_index
 
     def shape_tensors_and_store_data(self):
@@ -67,11 +67,9 @@ class TextProcessing:
         # every list must have the same size, zero paddings to fill
         data = pad_sequences(sequences, maxlen=self.max_len)
         labels = np.asarray(self.labels)
-        TextProcessing.logStream.info('Shape of data tensor:' .format(data.shape))
-        TextProcessing.logStream.info('Shape of label tensor:'.format(labels.shape))
+        # TextProcessing.logToStream.info('Shape of data  tensor : %s' % data.shape)
+        # TextProcessing.logToStream.info('Shape of label tensor : %s' % labels.shape)
 
-        # print('Shape of data tensor:', data.shape)
-        # print('Shape of label tensor:', labels.shape)
         # incremental list of size of data with the indices for shuffling the words.
         indices = np.arange(data.shape[0])
         np.random.shuffle(indices)
@@ -93,9 +91,9 @@ class TextProcessing:
         try:
             from h5py import File
             hdf = File(self.config.data.HDFS_INTERNAL_DATA_FILENAME, "w")
-        except IOError:
+        except IOError as e :
             TextProcessing.logToFile.error("The internal file failed to open for write in <TextProcessing/store_h5py")
-            # print("The internal file failed to open for write.")
+            TextProcessing.logToFile.error(e)
         else:
             try:
                 group_data = hdf.create_group("dataset")
@@ -112,8 +110,11 @@ class TextProcessing:
 
                 group_test.create_dataset("x_testset", data=x_test, compression="gzip")
                 group_test.create_dataset("y_testset", data=y_test, compression="gzip")
-            except IOError:
+            except IOError as e:
                 TextProcessing.logToFile.error("Failed to store in hdfs in <TextProcessing/store_h5py")
-                # print("Failed to store in hdfs")
-            hdf.close()
+                TextProcessing.logToFile.error(e)
+            else:
+                hdf.close()
+                TextProcessing.logToFile.logger.info("Successful creation of data file with in-house text processing.")
+                TextProcessing.logToStream.logger.info("Successful creation of data file with in-house text processing.")
 

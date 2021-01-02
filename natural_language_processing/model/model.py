@@ -18,7 +18,7 @@ from natural_language_processing.logging.LoggerCls import LoggerCls
 
 class Model(BaseModel):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    formatter = '%(name)s - %(levelname)s - %(message)s'
+    formatter = '%(asctime)s - %(levelname)s - %(name)s - %(message)s'
     logModel = LoggerCls("log_to_file", "Model", dir_path + "/Model.log", "w", formatter, "INFO")
     config = Config.from_json(CFG)
     embeddings_dimension = config.external_data_sources.embeddings_dimension
@@ -54,8 +54,8 @@ class Model(BaseModel):
                 # print("Did not provided an appropriate choice for the model to choose the training datasets.")
         except (TypeError, AttributeError, RuntimeError) as e:
             Model.logModel.error(e)
-            raise Model.logModel.error(
-                "Did not provided an appropriate choice for the model to choose the training datasets.")
+            # raise Model.logModel.error(
+            #     "Did not provided an appropriate choice for the model to choose the training datasets.")
 
     def build_architecture(self):
         try:
