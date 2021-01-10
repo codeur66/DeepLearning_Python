@@ -95,27 +95,25 @@ class Model(BaseModel):
     def train(self, **kwargs):
         try:
             Model.logModel.info("Starting the model training.")
-            history = self.model.fit(kwargs['x_train'],
+            History = self.model.fit(kwargs['x_train'],
                                      kwargs['y_train'],
                                      epochs=Model.config.train.epochs,
                                      batch_size=Model.config.train.batch_size,
                                      validation_data=(kwargs['x_val'], kwargs['y_val']))
-
             self.model.save_weights(Model.path_model + "trained_model.h5")
-            return history
+            return History
         except (TypeError, AttributeError, RuntimeError) as e:
             Model.logModel.error("Error on training")
             Model.logModel.error(e)
-
 
     def evaluate(self, **kwargs):
         try:
             Model.logModel.info("Starts to create the evaluation plots of the model.")
             import matplotlib.pyplot as plt
-            acc = plt.hist.history["acc"]
-            val_acc = plt.hist.history['val_acc']
-            loss = plt.hist.history['loss']
-            val_loss = plt.hist.history['val_loss']
+            acc = kwargs['History'].history["acc"]
+            val_acc = kwargs['History'].history['val_acc']
+            loss = kwargs['History'].history['loss']
+            val_loss = kwargs['History'].history['val_loss']
             epochs = range(1, len(acc) + 1)
             plt.plot(epochs, acc, 'bo', label='Training acc')
             plt.plot(epochs, val_acc, 'b', label='Validation acc')
@@ -129,8 +127,9 @@ class Model(BaseModel):
             plt.show()
             # evaluate on test data
             self.model.load_weights(Model.path_model + 'trained_model.h5')
-            self.model.evaluate(kwargs['x_test'].values(), kwargs['y_test'].values)
-        except (TypeError, AttributeError, RuntimeError) as e:
+            eval_metrics = self.model.evaluate(kwargs['x_test'], kwargs['y_test'])
+            Model.logModel.info('loss, acc:'  + str(eval_metrics) )
+        except (TypeError, AttributeError, RuntimeError, ValueError) as e:
             Model.logModel.error("Error encountered on the model evaluation.")
             Model.logModel.error(e)
 
@@ -152,7 +151,7 @@ if __name__ == '__main__':
         md.build_architecture().build(embeddings_matrix=embeddings_matrix)
         hist = md.train(x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val)
 
-        md.evaluate(history=hist, x_test=x_test, y_test=y_test)
+        md.evaluate(History=hist, x_test=x_test, y_test=y_test)
 
 
     exec_model_pipeline(use_internal_data=True, use_embeddings_data=False)
