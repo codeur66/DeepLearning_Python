@@ -128,7 +128,7 @@ class Model(BaseModel):
             # evaluate on test data
             self.model.load_weights(Model.path_model + 'trained_model.h5')
             eval_metrics = self.model.evaluate(kwargs['x_test'], kwargs['y_test'])
-            Model.logModel.info('loss, acc:'  + str(eval_metrics) )
+            Model.logModel.info('loss, acc:'  + str(eval_metrics))
         except (TypeError, AttributeError, RuntimeError, ValueError) as e:
             Model.logModel.error("Error encountered on the model evaluation.")
             Model.logModel.error(e)
