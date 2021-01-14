@@ -1,5 +1,5 @@
 #!/bin/sh
-#### run on terminal: sh  -e depedencies
+#### run on terminal: sh  -e dependencies
 echo "###### The installations begins ###### "
 pip install pandas
 pip install numpy
