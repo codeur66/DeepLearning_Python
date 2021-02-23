@@ -3,9 +3,8 @@ from natural_language_processing.configurations.configuration_infrastructure imp
 from natural_language_processing.configurations.configurations import CFG
 from keras.preprocessing.text import Tokenizer
 
-"""TextProcessing, different data sources
-may be added in the pipeline for other models or the current may need extension.
-In contrast to ParseWordEmbeddings class which holds external data source - pretrained.
+"""TextProcessing does the job of tokennization, spliting, storing: 
+Different data sources added frequently from the pipeline.
 """
 from natural_language_processing.logging.LoggerCls import LoggerCls
 import os.path
@@ -20,9 +19,6 @@ class TextProcessing:
 
     from natural_language_processing.configurations.configuration_infrastructure import Config
     from natural_language_processing.configurations.configurations import CFG
-    config = Config.from_json(CFG)
-    glove_dir = config.external_data_sources.word_embeddings
-    file_name = config.external_data_sources.embeddings_file_name
 
     def __init__(self):
         self.config = Config.from_json(CFG)

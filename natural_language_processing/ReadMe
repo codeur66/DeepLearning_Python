@@ -1,20 +1,41 @@
 ***************************************
-Supervised NLP on movies reviews.
+Supervised NLP on movies reviews
 ***************************************
-*Reviews belong into two classes positive or negative. 
 
-*Use and processing of texts from movies' reviews named "internal dataset" along with 
- pretrained world embeddings vocabulary, named "external".
- 
-*HDFS 
+*Reviews are as text and are either positive or negative\
+Through text processing the NN will learn to do itself the binary\
+ supervised classification\
+\
+* Parameters for the  Data pipeline and the Model
+in one file using object serialization.
 
-*Based on menu the user chooses if want to process the texts and store as HDFS the internal dataset only
-or the internal and the external, such as to check the best option for the Neural Network.
+Data Pipeline\
+_________________________________________________________________
 
-*The Network has to learn to do the classification. 
+*The processing of texts from the movies' reviews named
+"internal dataset"\
+*Use of pretrained world embeddings vocabulary, named "external".\
+*Use of HDFS\
+*Precise logging
 
-*The configuration on datasets's processing and the model trainning 
-  setted to be into one file using object serialization, when it was possible.  
-  
- * Jenkins CI installed, connected to Github DeepLearning_job_,
-   created job, set executors, scheduled jobs, build.
+Model\
+__________________________________________________________________
+
+*Abraction OOP \
+*Read from the HDFS\
+*Trainning giving the choice of using of not the word embeddings\
+*Plot\
+*Precise logging
+
+DevOps\
+__________________________________________________________________
+
+* Jenkins CI/CD installed and configured, connected to Github,\
+with job named DeepLearning_job_,\
+* Jenkins Pipeline_job for the build and tests.\
+* Test Coverage
+
+Future Goals\
+________________________________________________________________
+Mock Tests
+MLFlow

@@ -1,9 +1,11 @@
 from natural_language_processing.configurations.configuration_infrastructure import Config
 from natural_language_processing.configurations.configurations import CFG
-from natural_language_processing.data.text_processing import TextProcessing
+from natural_language_processing.data_pipeline.text_processing import TextProcessing
 
 from natural_language_processing.logging.LoggerCls import LoggerCls
 import os.path
+
+
 
 
 def menu():
@@ -47,7 +49,7 @@ def menu():
                                          x_val=x_val, y_val=y_val,
                                          x_test=x_test, y_test=y_test)
 
-                    from natural_language_processing.data.parse_word_embeddings import ParseWordEmbeddings
+                    from natural_language_processing.data_pipeline.parse_word_embeddings import ParseWordEmbeddings
                     word_index = data_proc.indexing_informs_tokenizer()
                     embeddings_matrix = ParseWordEmbeddings.create_embeddings_matrix(word_index)  # the pretrainned weights of NN
                     ParseWordEmbeddings.store_h5py(embeddings_matrix)
