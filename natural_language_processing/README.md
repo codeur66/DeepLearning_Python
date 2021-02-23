@@ -12,7 +12,7 @@ _________________________________________________________________
 
 * Parameters for the Data pipeline in one file using 
   object serialization.
-* The processing of texts from the movies' reviews named
+* Language processing of texts from the movies' reviews named
 "internal dataset"
 * Use of pretrained world embeddings vocabulary, named "external".
 * Use of HDFS
@@ -25,7 +25,7 @@ __________________________________________________________________
   object serialization.
 * Build in Keras using OOP
 * Read HDFS files
-* Trainning giving the choice of using of not the word embeddings
+* Training giving the choice of using of not the word embeddings
 * Plot, Evaluation
 * Precise logging
 
@@ -34,10 +34,10 @@ __________________________________________________________________
 
 * Jenkins CI/CD installed and configured, connected to Github,
   with job named DeepLearning_job_,
-* Jenkins Pipeline_job for the build and tests.
+* Jenkins Pipelinejob for the build and tests.
 * Monitoring for Test Coverage
 
-##Future Goals
+## Future Goals
 ________________________________________________________________
 * Mock Tests
 * MLFlow
