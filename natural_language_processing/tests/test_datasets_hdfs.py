@@ -1,14 +1,16 @@
 import unittest
-import sys
-import os
 # jenkins exposes the workspace directory through env.
 # with this code we can do import and set workspace.
 # to run it outside the jenkins workspace comment it.
-sys.path.append(os.environ['WORKSPACE'])
+# comment the three below lines if you run it outside of Jenkins Server.
+
+# import sys
+# import os
+# sys.path.append(os.environ['WORKSPACE'])
 import natural_language_processing.model.read_hdf5 as rd
 
 class TestDatasets(unittest.TestCase):
-    print("Tests if every dataset type is not empty and is ndarray.")
+    print("Tests dataset type as not empty and as ndarray.")
 
     def setUp(self) -> None:
         self.x_trnset, self.y_trnset, \

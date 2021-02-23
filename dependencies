@@ -11,3 +11,4 @@ pip install pydot  # for keras.utils.plot_model
 pip install psutil # to see the open files and close them (optional installation, for many different files)
 pip install python-jenkins
 pip install coverage
+pip install mock

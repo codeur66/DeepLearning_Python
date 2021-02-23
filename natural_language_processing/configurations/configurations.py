@@ -27,7 +27,7 @@ CFG = {
 
     },
     "train": {
-        "epochs": 1
+        "epochs": 10
         , "batch_size": 32
     }
 }
