@@ -48,15 +48,17 @@ class TextProcessing:
                     else:
                         self.labels.append(1)
 
-    # Counts the words with an incremental index and informs the dictionary of tokenizer
-    # <word , index_number>
     def indexing_informs_tokenizer(self):
+        """  Counts the words with an incremental index and informs the dictionary of
+         the tokenizer <word , index_number>"""
         self.tokenizer.fit_on_texts(self.texts)  # update vocabulary
         word_index = self.tokenizer.word_index  # create integer indices pre token.
         TextProcessing.logToStream.info('Found %s unique tokens.' % len(word_index))
         return word_index
 
+
     def shape_tensors_and_store_data(self):
+        """Create the tensors from sequences of text """
         from keras.preprocessing.sequence import pad_sequences  # to convert the lists into 2D of same sizes.
         sequences = self.tokenizer.texts_to_sequences(self.texts)  # convert text to numbers on most frequent words
         # each list of words represented by a sequential numbers
@@ -66,7 +68,7 @@ class TextProcessing:
         # TextProcessing.logToStream.info('Shape of data  tensor : %s' % data.shape)
         # TextProcessing.logToStream.info('Shape of label tensor : %s' % labels.shape)
 
-        # incremental list of size of data with the indices for shuffling the words.
+        # incremental list, create indices to  shuffle the words.
         indices = np.arange(data.shape[0])
         np.random.shuffle(indices)
         # the words shuffled randomly and we store them
