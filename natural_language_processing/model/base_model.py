@@ -8,6 +8,7 @@ Abstract Model Class (ABC) that is inherited to all models."""
 class BaseModel(ABC):
 
     def __init__(self, cfg):
+        super().__init__()
         self.config = Config.from_json(cfg)
 
     @abstractmethod

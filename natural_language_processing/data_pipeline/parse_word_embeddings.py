@@ -20,8 +20,8 @@ class ParseWordEmbeddings:
     dir_path = os.path.dirname(os.path.realpath(__file__))
     formatter = '%(asctime)s - %(levelname)s - %(name)s - %(message)s'
     logToFile = LoggerCls("log_to_file", "data pipeline processor:",
-                           dir_path + "/data_pipeline.log", "w", formatter,
-                           "INFO")
+                          dir_path + "/data_pipeline.log", "w", formatter,
+                          "INFO")
     logToStream = LoggerCls("log_to_stdout", "data pipeline processor: ", None, "w", formatter, "INFO")
 
     def __init__(self):
@@ -29,9 +29,8 @@ class ParseWordEmbeddings:
         self.dir_embeddings_data = self.config.external_data_sources.word_embeddings
         self.file_name = self.config.external_data_sources.embeddings_file_name
 
-    # embeddings is a dictionary that maps the word indices to an associated vector.
-
     def embeddings_vectors(self):
+        """  Embeddings is a dictionary that maps the word indices to an associated vector."""
         try:
             embedding_indexed_vectors = {}
             with open(os.path.join(self.dir_embeddings_data, self.file_name)) as f:
@@ -48,11 +47,10 @@ class ParseWordEmbeddings:
             ParseWordEmbeddings.logToFile.logger.error("Error encountered on method <embeddings_vectors>")
             ParseWordEmbeddings.logToFile.logger.error(e)
 
-    # All sequences in a batch must have the same length to pack them into a single tensor,
-    # so we do zero padding to shorter sequences, and the longer sequences are truncated.
-
-    @classmethod
     def create_embeddings_matrix(self, word_index):
+        """ All sequences in a batch must have the same length to pack them in a single tensor
+        so we do zero padding to shorter the sequences where the longer sequences are truncated."""
+
         ParseWordEmbeddings.logToStream.logger.info("Create embeddings matrix.")
         try:
             max_words = self.config.data.max_words
@@ -70,7 +68,6 @@ class ParseWordEmbeddings:
             ParseWordEmbeddings.logToFile.logger.error("Error in <create_embeddings_matrix>")
             ParseWordEmbeddings.logToFile.logger.error(e)
 
-    @classmethod
     def store_h5py(self, embedding_matrix):
         ParseWordEmbeddings.logToStream.logger.info("Stores to compressed file")
         try:

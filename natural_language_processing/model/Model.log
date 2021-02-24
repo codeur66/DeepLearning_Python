@@ -1,5 +1,3 @@
-2021-02-23 20:42:42 - INFO - Model - The model sets the network architecture - Caller method: < build_architecture > - Line No.: 62
-2021-02-23 20:42:43 - INFO - Model - Configuration of the hyperparameters - Caller method: < build > - Line No.: 78
-2021-02-23 20:42:43 - INFO - Model - Starting the model training. - Caller method: < train > - Line No.: 97
-2021-02-23 20:42:49 - INFO - Model - Starts to create the evaluation plots of the model. - Caller method: < evaluate > - Line No.: 111
-2021-02-23 20:42:58 - INFO - Model - loss, acc:[0.6931686997413635, 0.5] - Caller method: < evaluate > - Line No.: 131
+2021-02-25 00:17:47 - INFO - Model - The model sets the network architecture - Caller method: < build_architecture > - Line No.: 51
+2021-02-25 00:17:47 - INFO - Model - Configuration of the hyperparameters - Caller method: < build > - Line No.: 67
+2021-02-25 00:17:47 - INFO - Model - Starting the model training. - Caller method: < train > - Line No.: 86
