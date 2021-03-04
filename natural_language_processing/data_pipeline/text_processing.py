@@ -6,6 +6,7 @@ from keras.preprocessing.text import Tokenizer
 """TextProcessing does the job of tokennization, spliting, storing: 
 Different data sources added frequently from the pipeline.
 """
+import natural_language_processing.utils.time_counter as run_time
 from natural_language_processing.logging.LoggerCls import LoggerCls
 import os.path
 
@@ -28,10 +29,11 @@ class TextProcessing:
         self.training_samples = self.config.data.training_samples
         self.validation_samples = self.config.data.validation_samples
         self.max_words = self.config.data.max_words
-        self.tokenizer = Tokenizer(num_words=self.max_words) # the max numer of words to keep, the same for train and tests
+        self.tokenizer = Tokenizer(
+            num_words=self.max_words)  # the max numer of words to keep, the same for train and tests
 
     # Reads the folders stores in data structures the corresponding data (data and labels) for the train.
-
+    @run_time.timer
     def process_train_tst_data(self, path_data, filename):
         import os
         data_dir = os.path.join(path_data, filename)
@@ -56,7 +58,7 @@ class TextProcessing:
         TextProcessing.logToStream.info('Found %s unique tokens.' % len(word_index))
         return word_index
 
-
+    @run_time.timer
     def shape_tensors_and_store_data(self):
         """Create the tensors from sequences of text """
         from keras.preprocessing.sequence import pad_sequences  # to convert the lists into 2D of same sizes.
@@ -83,13 +85,14 @@ class TextProcessing:
                x[self.training_samples: self.training_samples + self.validation_samples], \
                y[self.training_samples: self.training_samples + self.validation_samples]
 
-    # HDF5 have the pros of much faster I/O and compressed size than
-    # SQL storage and the dis of memory vs the solid storage.
+    @run_time.timer
     def store_h5py(self, x_train, y_train, x_val, y_val, x_test, y_test):
+        """ HDF5 storage. Has the pros of much faster I/O and compressed size than
+         SQL storage and the dis of memory vs the solid storage."""
         try:
             from h5py import File
             hdf = File(self.config.data.HDFS_INTERNAL_DATA_FILENAME, "w")
-        except IOError as e :
+        except IOError as e:
             TextProcessing.logToFile.error("The internal file failed to open for write in <TextProcessing/store_h5py")
             TextProcessing.logToFile.error(e)
         else:
@@ -114,5 +117,5 @@ class TextProcessing:
             else:
                 hdf.close()
                 TextProcessing.logToFile.logger.info("Successful creation of data file with in-house text processing.")
-                TextProcessing.logToStream.logger.info("Successful creation of data file with in-house text processing.")
-
+                TextProcessing.logToStream.logger.info(
+                    "Successful creation of data file with in-house text processing.")

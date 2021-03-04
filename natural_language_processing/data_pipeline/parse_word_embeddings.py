@@ -13,6 +13,7 @@ to make them more relevant for the problem at hand, to improve the accuracy.
 from natural_language_processing.configurations.configuration_infrastructure import Config
 from natural_language_processing.configurations.configurations import CFG
 from natural_language_processing.logging.LoggerCls import LoggerCls
+import natural_language_processing.utils.time_counter as run_time
 import os.path
 
 
@@ -29,6 +30,7 @@ class ParseWordEmbeddings:
         self.dir_embeddings_data = self.config.external_data_sources.word_embeddings
         self.file_name = self.config.external_data_sources.embeddings_file_name
 
+    @run_time.timer
     def embeddings_vectors(self):
         """  Embeddings is a dictionary that maps the word indices to an associated vector."""
         try:
@@ -47,6 +49,9 @@ class ParseWordEmbeddings:
             ParseWordEmbeddings.logToFile.logger.error("Error encountered on method <embeddings_vectors>")
             ParseWordEmbeddings.logToFile.logger.error(e)
 
+
+    @classmethod
+    @run_time.timer
     def create_embeddings_matrix(self, word_index):
         """ All sequences in a batch must have the same length to pack them in a single tensor
         so we do zero padding to shorter the sequences where the longer sequences are truncated."""
@@ -68,6 +73,8 @@ class ParseWordEmbeddings:
             ParseWordEmbeddings.logToFile.logger.error("Error in <create_embeddings_matrix>")
             ParseWordEmbeddings.logToFile.logger.error(e)
 
+    @classmethod
+    @run_time.timer
     def store_h5py(self, embedding_matrix):
         ParseWordEmbeddings.logToStream.logger.info("Stores to compressed file")
         try:

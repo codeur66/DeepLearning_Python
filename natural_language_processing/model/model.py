@@ -11,6 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Flatten, Dense
 from tensorflow.keras.utils import plot_model
 from natural_language_processing.model.base_model import BaseModel
+import natural_language_processing.utils.time_counter as run_time
 
 
 class Model(BaseModel, ModelConfigurations):
@@ -23,6 +24,7 @@ class Model(BaseModel, ModelConfigurations):
         self.hdf_in = None
         self.hdf_ext = None
 
+    @run_time.timer
     def load_data(self, **kwargs):
         import natural_language_processing.model.read_hdf5 as rd
         try:
@@ -55,6 +57,7 @@ class Model(BaseModel, ModelConfigurations):
             self.logModel.error("Error encountered while the model try to build the architecture")
             self.logModel.error(e)
 
+    @run_time.timer
     def build(self, **kwargs):
         try:
             self.logModel.info("Configuration of the hyperparameters")
@@ -74,6 +77,7 @@ class Model(BaseModel, ModelConfigurations):
             self.logModel.error("Error encountered while the model configures the architecture")
             self.logModel.error(e)
 
+    @run_time.timer
     def train(self, **kwargs):
         try:
             self.logModel.info("Starting the model training.")
@@ -110,7 +114,7 @@ class Model(BaseModel, ModelConfigurations):
             # evaluate on test data
             self.model.load_weights(self.path_model + 'trained_model.h5')
             eval_metrics = self.model.evaluate(kwargs['x_test'], kwargs['y_test'])
-            self.logModel.info('loss, acc:'  + str(eval_metrics))
+            self.logModel.info('loss, acc:' + str(eval_metrics))
         except (TypeError, AttributeError, RuntimeError, ValueError) as e:
             self.logModel.error("Error encountered on the model evaluation.")
             self.logModel.error(e)
@@ -125,8 +129,8 @@ class Model(BaseModel, ModelConfigurations):
 
 
 if __name__ == '__main__':
+    @run_time.timer
     def exec_model_pipeline(use_internal_data, use_embeddings_data):
-
         md = Model(CFG, use_internal_data, use_embeddings_data)
         x_train, y_train, x_val, y_val, x_test, y_test, embeddings_matrix = md.load_data()
 
